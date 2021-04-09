@@ -1,11 +1,10 @@
 import "https://deno.land/x/dotenv/load.ts"
 import { Application } from "./deps.ts"
-import { router as OrderRoutes } from "./routes/orders.ts"
+import { registerMiddlewares } from "./middlewares/register.ts"
 
 const app = new Application()
 
-app.use(OrderRoutes.routes())
-app.use(OrderRoutes.allowedMethods())
+registerMiddlewares(app)
 
 app.addEventListener("listen", ({ hostname, port, secure }) => {
   console.log(
