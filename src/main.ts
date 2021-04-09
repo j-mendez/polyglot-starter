@@ -1,7 +1,7 @@
 import "https://deno.land/x/dotenv/load.ts"
-import { Application } from "./deps.ts"
 import { registerMiddlewares } from "./middlewares/register.ts"
 import { registerEventListeners } from "./events/register-listeners.ts"
+import { Application } from "./deps.ts"
 
 const server = async () => {
   const app = new Application()
