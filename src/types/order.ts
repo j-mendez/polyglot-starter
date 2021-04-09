@@ -28,12 +28,13 @@ type Ingredients = {
   toppings: ToppingsStrings[]
 }
 
-type Items = {
+type Item = {
+  customIngredients?: keyof Ingredients[]
   ingredients: Ingredients
   qty: number
 }
 
 export interface Order {
   id: string
-  items: Items[]
+  items: Item[]
 }
