@@ -20,10 +20,12 @@ Make sure to have deno installed. If your using mac you can use `brew install de
 
 ## Env
 
-Environmental variables are handled through .env files, example usage below.
+Environmental variables are handled through .env files. For an example look at the usage below. Check out [.env.defaults](.env.defaults) to see the full list.
 
 ```
 PORT=8000
+DB_PORT=27017
+DB_NAME=taco-rocket
 ```
 
 ## Deploying
