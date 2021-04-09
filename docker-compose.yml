@@ -1,0 +1,12 @@
+version: '3.0'
+services:
+  core:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    volumes:
+      - ./:/usr/src/app
+    ports:
+      - '${PORT:-8000}:${PORT:-8000}'
+volumes:
+  core:
