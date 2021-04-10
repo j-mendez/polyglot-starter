@@ -6,9 +6,9 @@ const router = new Router()
 router
   .get("/", controller.getLanding)
   .get("/orders", controller.getAllOrders)
-  .get("/orders/:id", controller.getOrderById)
+  .get<{ id: string }>("/orders/:id", controller.getOrderById)
   .post("/orders", controller.createOrder)
-  .put("/orders/:id", controller.updateOrderById)
-  .delete("/orders/:id", controller.deleteOrderById)
+  .put<{ id: string }>("/orders/:id", controller.updateOrderById)
+  .delete<{ id: string }>("/orders/:id", controller.deleteOrderById)
 
 export { router }

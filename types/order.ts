@@ -35,6 +35,6 @@ type Item = {
 }
 
 export interface OrderSchema {
-  _id: { $oid: string }
+  _id?: { $oid: string }
   items: Item[]
 }

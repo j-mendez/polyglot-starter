@@ -11,6 +11,10 @@ class MongoDb {
       this.db = client.database(Deno.env.get("MONGO_DB_NAME") + "")
     } catch (e) {
       console.log(yellow(`Database connection error: ${e}`))
+      setTimeout(
+        this.connect,
+        Number(Deno.env.get("MONGO_DB_RETRY_TIMOUT")) || 15000
+      )
     }
   }
   get ordersCollection() {
