@@ -2,6 +2,7 @@ import type { AppContext } from "../types/context.ts"
 import { Status, Bson, cyan } from "../deps.ts"
 import { mongodb } from "../databases/mongodb.ts"
 import { notFound } from "../validators/rest/not-found.ts"
+import { apiError } from "../validators/rest/api-error.ts"
 import { validateOrderItems } from "../validators/rest/order.ts"
 import { validateBody } from "../validators/rest/body.ts"
 
@@ -13,15 +14,31 @@ export default {
 
     validateOrderItems(ctx, newOrder)
 
-    const id = await mongodb?.ordersCollection?.insertOne(newOrder)
+    try {
+      const id = await mongodb?.ordersCollection?.insertOne(newOrder)
 
-    ctx.response.body = { data: { id } }
+      ctx.response.body = { data: { id } }
+    } catch (e) {
+      console.error(`${cyan("Error:")} ${e?.message}`)
+    } finally {
+      if (!ctx.response.body) {
+        return apiError(ctx)
+      }
+    }
   },
   getLanding: (ctx: AppContext) => {
     ctx.response.body = `"Dedicated to that one guy that really loves tacos"`
   },
   getAllOrders: async (ctx: AppContext) => {
-    ctx.response.body = await mongodb?.ordersCollection?.find()?.toArray()
+    try {
+      ctx.response.body = await mongodb?.ordersCollection?.find()?.toArray()
+    } catch (e) {
+      console.error(`${cyan("Error:")} ${e?.message}`)
+    } finally {
+      if (!ctx.response.body) {
+        return apiError(ctx)
+      }
+    }
   },
   getOrderById: async (ctx: AppContext) => {
     try {
