@@ -14,7 +14,7 @@ make sure to have [docker](https://docs.docker.com/get-docker) and [compose](htt
 
 ### Local
 
-Make sure to have deno installed. If your using mac you can use `brew install deno`. If your starting the application locally make sure to have [mongodb](https://www.mongodb.com) running for database operations.
+Make sure to have deno installed. If your using mac you can use `brew install deno`. If your starting the application locally make sure to have [mongodb](https://www.mongodb.com) running for database operations. You need to add a `.env` file and add `DB_URL=$URL_DB_URL`, replace `$URL_DB_URL` with your database endpoint.
 
 1. `deno run --allow-read --allow-env --allow-net main.ts`
 
@@ -26,7 +26,12 @@ Environmental variables are handled through .env files. For an example look at t
 PORT=8000
 DB_PORT=27017
 DB_NAME=taco-rocket
+DB_URL=mongodb://mongodb:27017/?compressors=zlib&gssapiServiceName=mongodb
 ```
+
+## Database
+
+Mongodb is one of the databases used in the application. If your using docker and need an admin tool navigate to `localhost:8081`.
 
 ## Deploying
 

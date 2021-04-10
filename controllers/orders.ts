@@ -1,23 +1,6 @@
 import type { AppContext } from "../types/context.ts"
-import type { Order } from "../types/order.ts"
+import { mongodb } from "../databases/mongodb.ts"
 import { Status } from "../deps.ts"
-
-const orders = new Map<string, Order>()
-
-orders.set("0", {
-  id: "0",
-  items: [
-    {
-      ingredients: {
-        wrap: "hard",
-        meat: "chicken",
-        toppings: ["lettuce"],
-        cheese: "chedder"
-      },
-      qty: 1
-    }
-  ]
-})
 
 export default {
   createOrder: async (ctx: AppContext) => {
@@ -25,11 +8,7 @@ export default {
       ctx.throw(Status.BadRequest, "Bad Request")
     }
 
-    const id = String(orders.size)
-    const newOrder = {
-      ...ctx.request.body(),
-      id
-    }
+    const newOrder = ctx.request.body()
 
     ctx.assert(
       newOrder.items &&
@@ -39,14 +18,15 @@ export default {
       "Order items not found, please add items and try again"
     )
 
-    orders.set(id, newOrder)
-    ctx.response.body = newOrder
+    const id = await mongodb?.ordersCollection?.insertOne(newOrder)
+
+    ctx.response.body = { data: { id }, status: "success" }
   },
   getLanding: (ctx: AppContext) => {
     ctx.response.body = `"Dedicated to that one guy that really loves tacos"`
   },
-  getAllOrders: (ctx: AppContext) => {
-    ctx.response.body = Array.from(orders.values())
+  getAllOrders: async (ctx: AppContext) => {
+    ctx.response.body = await mongodb?.ordersCollection?.find()?.toArray()
   },
   getOrderById: (ctx: AppContext) => {},
   updateOrderById: async (ctx: AppContext) => {},

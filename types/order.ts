@@ -34,7 +34,7 @@ type Item = {
   qty: number
 }
 
-export interface Order {
-  id: string
+export interface OrderSchema {
+  _id: { $oid: string }
   items: Item[]
 }
