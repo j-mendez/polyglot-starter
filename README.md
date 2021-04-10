@@ -33,6 +33,23 @@ DB_URL=mongodb://mongodb:27017/?compressors=zlib&gssapiServiceName=mongodb
 
 Mongodb is one of the databases used in the application. If your using docker and need an admin tool navigate to `localhost:8081`.
 
+## Examples
+
+To get started with testing the api you can use the `fixtures` in the project as a starting point. In terminal run the scripts below. 
+
+#### POST order
+insert a new order
+
+```
+./fixtures/post-order.sh
+```
+#### GET orders
+retrieve all orders
+
+```
+./fixtures/get-orders.sh
+```
+
 ## Deploying
 
 Deployment is done using [ECS](https://console.aws.amazon.com/ecs) for clustering, security groups, load balancing, logging, volumes, and elastic scaling. The docker image used for the api is at [image](https://hub.docker.com/r/jeffmendez19/taco-api)
