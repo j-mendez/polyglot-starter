@@ -5,10 +5,10 @@ const router = new Router()
 
 router
   .get("/", controller.getLanding)
-  .get("/orders", controller.getAllOrders)
-  .get<{ id: string }>("/orders/:id", controller.getOrderById)
-  .post("/orders", controller.createOrder)
-  .put<{ id: string }>("/orders/:id", controller.updateOrderById)
-  .delete<{ id: string }>("/orders/:id", controller.deleteOrderById)
+  .get("/api/orders", controller.getAllOrders)
+  .get<{ id: string }>("/api/orders/:id", controller.getOrderById)
+  .post("/api/orders", controller.createOrder)
+  .put<{ id: string }>("/api/orders/:id", controller.updateOrderById)
+  .delete<{ id: string }>("/api/orders/:id", controller.deleteOrderById)
 
 export { router }
