@@ -8,6 +8,10 @@ const registerEventListeners = (app: Application) => {
       }:${port}`
     )
   })
+
+  app.addEventListener("error", event => {
+    console.log(event.error)
+  })
 }
 
 export { registerEventListeners }

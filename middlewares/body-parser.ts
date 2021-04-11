@@ -1,6 +1,6 @@
 import { Context } from "../deps.ts"
 
-const bodyParser = async (ctx: Context, next?: () => Promise<void>) => {
+const bodyParser = async (ctx: Context, next: () => Promise<void>) => {
   if (ctx.request.hasBody) {
     const result = ctx.request.body()
     if (result.type === "json") {
@@ -10,7 +10,7 @@ const bodyParser = async (ctx: Context, next?: () => Promise<void>) => {
       }
     }
   }
-  next && (await next())
+  await next()
 }
 
 export { bodyParser }

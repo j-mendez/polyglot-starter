@@ -1,5 +1,4 @@
-import { Context } from "../deps.ts"
-import { Status } from "../deps.ts"
+import { Context, Status } from "../deps.ts"
 
 export function notFound(ctx: Context) {
   ctx.response.status = Status.NotFound
