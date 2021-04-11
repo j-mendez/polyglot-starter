@@ -24,9 +24,10 @@ Environmental variables are handled through .env files. For an example look at t
 
 ```
 PORT=8000
-DB_PORT=27017
-DB_NAME=taco-rocket
-DB_URL=mongodb://mongodb:27017/?compressors=zlib&gssapiServiceName=mongodb
+MONGO_DB_PORT=27017
+MONGO_DB_NAME=taco-rocket
+MONGO_DB_URL=mongodb://mongodb:27017/?compressors=zlib&gssapiServiceName=mongodb
+MONGO_DB_RETRY_TIMOUT=15000
 ```
 
 ## Database

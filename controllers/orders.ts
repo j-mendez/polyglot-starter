@@ -1,23 +1,21 @@
 import type { AppContext } from "../types/context.ts"
-import { Status, Bson, cyan } from "../deps.ts"
-import { mongodb } from "../databases/mongodb.ts"
+import { Status, cyan } from "../deps.ts"
 import { notFound } from "../validators/rest/not-found.ts"
 import { apiError } from "../validators/rest/api-error.ts"
 import { validateOrderItems } from "../validators/rest/order.ts"
 import { validateBody } from "../validators/rest/body.ts"
+import { Order } from "../models/order.ts"
 
 export default {
   createOrder: async (ctx: AppContext) => {
     validateBody(ctx)
-
     const newOrder = ctx.request.body()
-
     validateOrderItems(ctx, newOrder)
 
     try {
-      const id = await mongodb?.ordersCollection?.insertOne(newOrder)
+      const id = await Order.insert(newOrder)
 
-      ctx.response.body = { data: { id } }
+      ctx.response.body = { data: id }
     } catch (e) {
       console.error(`${cyan("Error:")} ${e?.message}`)
     } finally {
@@ -31,7 +29,7 @@ export default {
   },
   getAllOrders: async (ctx: AppContext) => {
     try {
-      ctx.response.body = await mongodb?.ordersCollection?.find()?.toArray()
+      ctx.response.body = await Order.find()
     } catch (e) {
       console.error(`${cyan("Error:")} ${e?.message}`)
     } finally {
@@ -42,9 +40,7 @@ export default {
   },
   getOrderById: async (ctx: AppContext) => {
     try {
-      ctx.response.body = await mongodb?.ordersCollection?.findOne({
-        _id: new Bson.ObjectId(ctx?.params?.id)
-      })
+      ctx.response.body = await Order.findById(ctx?.params?.id)
     } catch (e) {
       console.error(`${cyan("Error:")} ${e?.message}`)
     } finally {
@@ -55,17 +51,13 @@ export default {
   },
   updateOrderById: async (ctx: AppContext) => {
     validateBody(ctx)
-
     const updatedOrder = ctx.request.body()
-
     validateOrderItems(ctx, updatedOrder)
 
     try {
-      ctx.response.body = await mongodb?.ordersCollection?.updateOne(
-        {
-          _id: new Bson.ObjectId(ctx?.params?.id)
-        },
-        { $set: { items: updatedOrder.items } }
+      ctx.response.body = await Order.updateById(
+        String(ctx?.params?.id),
+        updatedOrder
       )
     } catch (e) {
       console.error(`${cyan("Error:")} ${e?.message}`)
@@ -76,12 +68,8 @@ export default {
     }
   },
   deleteOrderById: async (ctx: AppContext) => {
-    const id = ctx?.params?.id
-
     try {
-      ctx.response.body = await mongodb?.ordersCollection?.deleteOne({
-        _id: new Bson.ObjectId(id)
-      })
+      ctx.response.body = await Order.deleteById(ctx?.params?.id)
     } catch (e) {
       console.error(`${cyan("Error:")} ${e?.message}`)
     } finally {
