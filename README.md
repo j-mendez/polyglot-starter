@@ -39,16 +39,24 @@ Mongodb is one of the databases used in the application. If your using docker an
 To get started with testing the api you can use the `fixtures` in the project as a starting point. In terminal run the scripts below. 
 
 #### POST order
-insert a new order
-
+create new order.
 ```
 ./fixtures/post-order.sh
 ```
 #### GET orders
-retrieve all orders
-
+retrieve all orders.
 ```
 ./fixtures/get-orders.sh
+```
+#### GET order by id
+retrieve a single order by id, replace `$id` with the order id returned on create order.
+```
+./fixtures/get-order-by-id.sh "$id"
+```
+#### DELETE order by id
+delete a single order by id, replace `$id` with the order id returned on create order.
+```
+./fixtures/delete-order-by-id.sh "$id"
 ```
 
 ## Deploying
