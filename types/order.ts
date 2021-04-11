@@ -47,4 +47,5 @@ export type Item = {
 export interface OrderSchema {
   _id?: { $oid: string }
   items: Item[]
+  random?: boolean
 }

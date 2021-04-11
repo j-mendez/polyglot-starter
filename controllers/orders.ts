@@ -1,10 +1,11 @@
 import type { AppContext } from "../types/context.ts"
 import { Status, cyan } from "../deps.ts"
+import { Order } from "../models/order.ts"
 import { notFound } from "../validators/rest/not-found.ts"
 import { apiError } from "../validators/rest/api-error.ts"
 import { validateOrderItems } from "../validators/rest/order.ts"
 import { validateBody } from "../validators/rest/body.ts"
-import { Order } from "../models/order.ts"
+import { randomize } from "../utils/randomize.ts"
 
 export default {
   createOrder: async (ctx: AppContext) => {
@@ -13,7 +14,9 @@ export default {
     validateOrderItems(ctx, newOrder)
 
     try {
-      const id = await Order.insert(newOrder)
+      const id = await Order.insert(
+        newOrder.random ? randomize("order") : newOrder
+      )
 
       ctx.response.body = { data: id }
     } catch (e) {

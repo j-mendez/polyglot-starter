@@ -8,8 +8,10 @@ import { Toppings, Wrap, Protein, Cheese } from "../../types/order.ts"
 import { yellow, Status } from "../../deps.ts"
 
 export function validateOrderItems(ctx: AppContext, newOrder: OrderSchema) {
-  hasOrderItems(ctx, newOrder)
-  hasValidOrderItems(ctx, newOrder)
+  if (!newOrder.random) {
+    hasOrderItems(ctx, newOrder)
+    hasValidOrderItems(ctx, newOrder)
+  }
 }
 
 const hasOrderItems = (ctx: AppContext, newOrder: OrderSchema) => {
