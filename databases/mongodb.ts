@@ -9,7 +9,7 @@ class MongoDb {
   connect = async (retry?: boolean) => {
     try {
       await this.client?.connect(Deno.env.get("MONGO_DB_URL") + "")
-      console.log(green("Database connection successful"))
+      console.log(green("Database connection opened"))
     } catch (e) {
       console.log(yellow(`Database connection error: ${e}`))
       if (retry) {

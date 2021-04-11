@@ -1,34 +1,44 @@
-enum Toppings {
+export enum Toppings {
   lettuce,
   onions
 }
 
-enum Wrap {
+export enum Wrap {
   soft,
   hard
 }
 
-enum Protein {
+export enum Protein {
   chicken,
   beef
 }
 
-enum Cheese {
+export enum Cheese {
   chedder,
   provolon,
   mixed
 }
 
-type ToppingsStrings = keyof typeof Toppings
+export type ToppingsOptions = keyof typeof Toppings
+export type WrapOptions = keyof typeof Wrap
+export type ProteinOptions = keyof typeof Protein
+export type CheeseOptions = keyof typeof Cheese
 
-type Ingredients = {
-  wrap: keyof typeof Wrap
-  meat: keyof typeof Protein
-  cheese: keyof typeof Cheese
-  toppings: ToppingsStrings[]
+export type Ingredients = {
+  wrap: WrapOptions
+  protein: ProteinOptions
+  cheese: CheeseOptions
+  toppings: ToppingsOptions[]
+  [x: string]: any
 }
 
-type Item = {
+export type IngredientsOptions = {
+  validator: typeof Toppings | typeof Wrap | typeof Protein | typeof Cheese
+  key: keyof Ingredients
+  value: ToppingsOptions | WrapOptions | ProteinOptions | CheeseOptions | any
+}
+
+export type Item = {
   customIngredients?: keyof Ingredients[]
   ingredients: Ingredients
   qty: number

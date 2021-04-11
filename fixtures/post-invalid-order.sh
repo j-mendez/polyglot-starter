@@ -7,7 +7,7 @@ curl --location --request POST 'localhost:8000/api/orders' \
         {
             "ingredients": {
                 "wrap": "soft",
-                "protein": "beef",
+                "protein": "turkey",
                 "toppings": [
                     "lettuce"
                 ],

@@ -1,19 +1,4 @@
 #!/bin/bash
 
 curl --location --request GET 'localhost:8000/api/orders' \
---header 'Content-Type: application/json' \
---data-raw '{
-    "items": [
-        {
-            "ingredients": {
-                "wrap": "soft",
-                "meat": "beef",
-                "toppings": [
-                    "lettuce"
-                ],
-                "cheese": "chedder"
-            },
-            "qty": 1
-        }
-    ]
-}'
+--header 'Content-Type: application/json'
