@@ -3,12 +3,9 @@ import { registerMiddlewares } from "./middlewares/register.ts"
 import { registerEventListeners } from "./events/register-listeners.ts"
 import { Application } from "./deps.ts"
 
-const server = async () => {
-  const app = new Application()
-  registerMiddlewares(app)
-  registerEventListeners(app)
+const app = new Application()
 
-  await app.listen({ port: Number(Deno.env.get("PORT")) || 0 })
-}
+registerMiddlewares(app)
+registerEventListeners(app)
 
-server()
+await app.listen({ port: Number(Deno.env.get("PORT")) || 0 })
