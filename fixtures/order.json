@@ -3,7 +3,7 @@
         {
             "ingredients": {
                 "wrap": "soft",
-                "meat": "beef",
+                "protein": "beef",
                 "toppings": [
                     "lettuce",
 					"onions"

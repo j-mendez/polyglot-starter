@@ -39,7 +39,7 @@ export type IngredientsOptions = {
 }
 
 export type Item = {
-  customIngredients?: keyof Ingredients[]
+  customIngredients?: keyof Ingredients
   ingredients: Ingredients
   qty: number
 }
