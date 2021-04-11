@@ -43,6 +43,10 @@ create new order.
 ```
 ./fixtures/post-order.sh
 ```
+create new random order.
+```
+./fixtures/post-random-order.sh
+```
 #### GET orders
 retrieve all orders.
 ```
