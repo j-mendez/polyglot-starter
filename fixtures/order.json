@@ -10,6 +10,7 @@
                 ],
                 "cheese": "chedder"
             },
+            "name": "simple order",
             "qty": 1
         }
     ]

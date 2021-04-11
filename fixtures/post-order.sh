@@ -13,6 +13,7 @@ curl --location --request POST 'localhost:8000/api/orders' \
                 ],
                 "cheese": "chedder"
             },
+            "name": 1,
             "qty": 1
         }
     ]

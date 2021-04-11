@@ -11,11 +11,13 @@ const rateLimit = async (ctx: Context, next: () => Promise<void>) => {
     await rateLimiter.consume(ctx.request.ip, 1)
     await next()
   } catch (rejection) {
-    ctx.response.status = Status.TooManyRequests
-    const secondsBeforeNext = rejection?._msBeforeNext / 1000
-    ctx.response.body = `<html><body><h1>429 - Too many Request</h1><p>Please wait ${secondsBeforeNext} second${
-      secondsBeforeNext === 1 ? "" : "s"
-    }  and try again.</p></body></html>`
+    if (rejection?._msBeforeNext) {
+      ctx.response.status = Status.TooManyRequests
+      const secondsBeforeNext = rejection._msBeforeNext / 1000
+      ctx.response.body = `<html><body><h1>429 - Too many Request</h1><p>Please wait ${secondsBeforeNext} second${
+        secondsBeforeNext === 1 ? "" : "s"
+      }  and try again.</p></body></html>`
+    }
   }
 }
 

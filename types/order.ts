@@ -29,6 +29,7 @@ export type Ingredients = {
   protein: ProteinOptions
   cheese: CheeseOptions
   toppings: ToppingsOptions[]
+
   [x: string]: any
 }
 
@@ -41,6 +42,7 @@ export type IngredientsOptions = {
 export type Item = {
   customIngredients?: keyof Ingredients
   ingredients: Ingredients
+  name?: string | number
   qty: number
 }
 
