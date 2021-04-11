@@ -42,7 +42,7 @@ export type IngredientsOptions = {
 export type Item = {
   customIngredients?: keyof Ingredients
   ingredients: Ingredients
-  name?: string | number
+  name?: string
   qty: number
 }
 

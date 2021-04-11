@@ -64,11 +64,12 @@ const hasValidOrderItems = (ctx: AppContext, newOrder: OrderSchema) => {
       "Order item qty needs to be a number greater than 0, please add a valid qty value and try again"
     )
 
-    ctx.assert(
-      typeof item.name === "string" || typeof item.name === "number",
-      Status.BadRequest,
-      "Order name is not a string or number, please add a valid type and try again"
-    )
+    item.name &&
+      ctx.assert(
+        typeof item.name === "string",
+        Status.BadRequest,
+        "Order name is not a string, please add a valid name and try again"
+      )
 
     const optionsSet = {
       toppings: false,
