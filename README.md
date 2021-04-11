@@ -57,7 +57,7 @@ Deployment is done using [ECS](https://console.aws.amazon.com/ecs) for clusterin
 
 ## About
 
-This apps main goal is for CRUD, architecture, and security. Since security is a core focus for the application we are using [Deno](https://github.com/denoland) for the backend along with [oak](https://oakserver.github.io/oak/) as a middleware framework ("express like"). 
+This apps main goal is for CRUD, architecture, and security. Since security is a core focus for the application we are using [Deno](https://github.com/denoland) for the backend along with [oak](https://oakserver.github.io/oak/) as a middleware framework ("express like"). When you post an order, if the option is not a part of the ingredient list the order will be rejected with output of valid options. The ingredient list is in memory using `enum`. If we want to add the ability to add to the ingredients list we can either mutate the enum at runtime or use the database with a `seed` step to generate the intial ingredients based off the enums. For now neither was done and the option to add a new ingredient is set by bypassing the available options through the `customeIngredients` property in the order item. For an example checkout [custom-order-fixture](./fixtures/post-custom-order.sh)
 
 
 
