@@ -6,6 +6,7 @@ import { apiError } from "../validators/rest/api-error.ts"
 import { validateOrderItems } from "../validators/rest/order.ts"
 import { validateBody } from "../validators/rest/body.ts"
 import { randomize } from "../utils/randomize.ts"
+import { orderViews } from "../views/orders.ts"
 
 export default {
   createOrder: async (ctx: AppContext) => {
@@ -28,7 +29,7 @@ export default {
     }
   },
   getLanding: (ctx: AppContext) => {
-    ctx.response.body = `"Dedicated to that one guy that really loves tacos"`
+    ctx.response.body = orderViews.landing
   },
   getAllOrders: async (ctx: AppContext) => {
     try {
