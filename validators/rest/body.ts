@@ -5,4 +5,5 @@ export function validateBody(ctx: AppContext) {
   if (!ctx.request.hasBody) {
     ctx.throw(Status.BadRequest, "Bad Request")
   }
+  return ctx.request.body()
 }

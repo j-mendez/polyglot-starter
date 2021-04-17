@@ -1,27 +1,22 @@
 import type { AppContext } from "../types/context.ts"
-import { Status, cyan } from "../deps.ts"
 import { Order } from "../models/order.ts"
 import { notFound } from "../validators/rest/not-found.ts"
 import { apiError } from "../validators/rest/api-error.ts"
-import { validateOrderItems } from "../validators/rest/order.ts"
-import { validateBody } from "../validators/rest/body.ts"
 import { randomize } from "../utils/randomize.ts"
+import { log } from "../utils/log.ts"
 import { orderViews } from "../views/orders.ts"
 
 export default {
   createOrder: async (ctx: AppContext) => {
-    validateBody(ctx)
     const newOrder = ctx.request.body()
-    validateOrderItems(ctx, newOrder)
 
     try {
       const id = await Order.insert(
         newOrder.random ? randomize("order") : newOrder
       )
-
       ctx.response.body = { data: id }
     } catch (e) {
-      console.error(`${cyan("Error:")} ${e?.message}`)
+      log(e)
     } finally {
       if (!ctx.response.body) {
         return apiError(ctx)
@@ -35,7 +30,7 @@ export default {
     try {
       ctx.response.body = await Order.find()
     } catch (e) {
-      console.error(`${cyan("Error:")} ${e?.message}`)
+      log(e)
     } finally {
       if (!ctx.response.body) {
         return apiError(ctx)
@@ -46,7 +41,7 @@ export default {
     try {
       ctx.response.body = await Order.findById(ctx?.params?.id)
     } catch (e) {
-      console.error(`${cyan("Error:")} ${e?.message}`)
+      log(e)
     } finally {
       if (!ctx.response.body) {
         return notFound(ctx)
@@ -54,9 +49,7 @@ export default {
     }
   },
   updateOrderById: async (ctx: AppContext) => {
-    validateBody(ctx)
     const updatedOrder = ctx.request.body()
-    validateOrderItems(ctx, updatedOrder)
 
     try {
       ctx.response.body = await Order.updateById(
@@ -64,7 +57,7 @@ export default {
         updatedOrder
       )
     } catch (e) {
-      console.error(`${cyan("Error:")} ${e?.message}`)
+      log(e)
     } finally {
       if (!ctx.response.body) {
         return notFound(ctx)
@@ -75,7 +68,7 @@ export default {
     try {
       ctx.response.body = await Order.deleteById(ctx?.params?.id)
     } catch (e) {
-      console.error(`${cyan("Error:")} ${e?.message}`)
+      log(e)
     } finally {
       if (!ctx.response.body) {
         return notFound(ctx)

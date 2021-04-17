@@ -1,6 +1,6 @@
 # deno-rest-starter
 
-a deno rest starter application focused on making tacos
+a deno rest starter application with focused on making tacos
 
 ## Getting Started
 
@@ -18,6 +18,24 @@ Make sure to have deno installed. If your using mac you can use `brew install de
 
 1. `deno run --allow-read --allow-env --allow-net main.ts`
 
+## Validation
+
+REST validation is done through [validator-middleware](middlewares/validator.ts). 
+
+## Middlewares
+
+below are a list of custom middlewares in registration order.
+
+1. [rate-limiting](middlewares/rate-limiting.ts)
+2. [body-parser](middlewares/body-parser.ts)
+3. [errors](middlewares/errors.ts#L8)
+4. [validator](middlewares/validator.ts)
+4. [404](middlewares/errors.ts#L3)
+
+## Testing
+
+The app is setup with assertion testing that handles redirection to valid responses for a rest api. When building new features handle the validation through assertions inside the file.
+
 ## Env
 
 Environmental variables are handled through .env files. For an example look at the usage below. Check out [.env.defaults](.env.defaults) to see the full list.
@@ -34,11 +52,11 @@ MONGO_DB_RETRY_TIMOUT=15000
 
 Mongodb is one of the databases used in the application. If your using docker and need an admin tool navigate to `localhost:8081`.
 
-## Examples
+## Fixtures
 
 To get started with testing the api you can use the `fixtures` in the project as a starting point. In terminal run the scripts below. 
 
-#### POST order
+### POST order
 create new order.
 ```
 ./fixtures/post-order.sh
@@ -47,23 +65,23 @@ create new random order.
 ```
 ./fixtures/post-random-order.sh
 ```
-#### GET orders
+### GET orders
 retrieve all orders.
 ```
 ./fixtures/get-orders.sh
 ```
-#### GET order by id
+### GET order by id
 retrieve a single order by id, replace `$id` with the order id returned on create order.
 ```
 ./fixtures/get-order-by-id.sh "$id"
 ```
-#### DELETE order by id
+### DELETE order by id
 delete a single order by id, replace `$id` with the order id returned on create order.
 ```
 ./fixtures/delete-order-by-id.sh "$id"
 ```
 
-#### Test rate limit
+### Test rate limit
 test rate limiter
 ```
 ./fixtures/test-rate-limit.sh
@@ -76,6 +94,3 @@ Deployment is done using [ECS](https://console.aws.amazon.com/ecs) for clusterin
 ## About
 
 This apps main goal is for CRUD, architecture, and security. Since security is a core focus for the application we are using [Deno](https://github.com/denoland) for the backend along with [oak](https://oakserver.github.io/oak/) as a middleware framework ("express like"). When you post an order, if the option is not a part of the ingredient list the order will be rejected with output of valid options. The ingredient list is in memory using `enum`. If we want to add the ability to add to the ingredients list we can either mutate the enum at runtime or use the database with a `seed` step to generate the intial ingredients based off the enums. For now neither was done and the option to add a new ingredient is set by bypassing the available options through the `customIngredients` property in the order item. For an example checkout [custom-order-fixture](./fixtures/post-custom-order.sh). Rate limiting is added as a security feature to protect against DDOS. The current rate is set to 2 request per 3 seconds, to adjust the middleware go to [Rate Limiting](./middlewares/rate-limiting.ts).
-
-
-
