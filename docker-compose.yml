@@ -18,7 +18,7 @@ services:
 
   redis:
     container_name: redis
-    image: "redis:alpine"
+    image: redis:alpine
     networks:
       - backend
 
