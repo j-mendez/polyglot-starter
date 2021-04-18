@@ -1,14 +1,9 @@
 import { runBenchmarks, bench } from "https://deno.land/std/testing/bench.ts"
 import { toggleRateLimiting } from "../utils/toggle-rate-limiter.ts"
 
-const testFixture = JSON.parse(Deno.readTextFileSync("./fixtures/order.json"))
-
-const body = JSON.stringify(testFixture)
-
-const postOrder = async () => {
+const getOrder = async () => {
   const res = await fetch("http://127.0.0.1:8000/api/orders", {
-    method: "POST",
-    body,
+    method: "GET",
     headers: {
       "Content-Type": "application/json"
     }
@@ -24,7 +19,7 @@ bench({
   async func(b): Promise<void> {
     b.start()
     for (let i = 0; i < 10; i++) {
-      await postOrder()
+      await getOrder()
       console.log(i + 1)
     }
     b.stop()
@@ -36,7 +31,7 @@ bench({
   runs: 10,
   async func(b): Promise<void> {
     b.start()
-    await Promise.all([postOrder(), postOrder(), postOrder()])
+    await Promise.all([getOrder(), getOrder(), getOrder()])
     b.stop()
   }
 })
