@@ -8,7 +8,9 @@ const rateLimiter = new (RateLimiterFlexible as RateLimiter).RateLimiterMemory({
 
 const rateLimit = async (ctx: Context, next: () => Promise<void>) => {
   try {
-    await rateLimiter.consume(ctx.request.ip, 1)
+    if (!Deno.env.get("RATE_LIMITING_DISABLED")) {
+      await rateLimiter.consume(ctx.request.ip, 1)
+    }
     await next()
   } catch (rejection) {
     if (rejection?._msBeforeNext) {

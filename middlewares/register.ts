@@ -1,5 +1,6 @@
 import { Application } from "../deps.ts"
 import { router as OrdersRoutes } from "../routes/orders.ts"
+import { router as SystemRoutes } from "../routes/system.ts"
 import { bodyParser } from "./body-parser.ts"
 import { notFound, errorHandler } from "./errors.ts"
 import { rateLimit } from "./rate-limiting.ts"
@@ -11,6 +12,8 @@ const registerMiddlewares = (app: Application) => {
     bodyParser,
     errorHandler,
     validator,
+    SystemRoutes.routes(),
+    SystemRoutes.allowedMethods(),
     OrdersRoutes.routes(),
     OrdersRoutes.allowedMethods(),
     notFound
