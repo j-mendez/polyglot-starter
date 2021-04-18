@@ -9,9 +9,9 @@ class MongoDb {
   connect = async (retry?: boolean) => {
     try {
       await this.client?.connect(Deno.env.get("MONGO_DB_URL") + "")
-      console.log(green("Database connection opened"))
+      console.log(green("MongoDb connection opened"))
     } catch (e) {
-      console.log(yellow(`Database connection error: ${e}`))
+      console.log(yellow(`MongoDb connection error: ${e}`))
       if (retry) {
         setTimeout(
           this.connect,
@@ -25,7 +25,7 @@ class MongoDb {
   }
   close = async () => {
     await this.client?.close()
-    console.log(bold("Database connection closed"))
+    console.log(bold("MongoDb connection closed"))
   }
 }
 

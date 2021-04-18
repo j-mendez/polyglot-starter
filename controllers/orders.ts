@@ -11,10 +11,11 @@ export default {
     const newOrder = ctx.request.body()
 
     try {
-      const id = await Order.insert(
-        newOrder.random ? randomize("order") : newOrder
-      )
-      ctx.response.body = { data: id }
+      ctx.response.body = {
+        data: await Order.insert(
+          newOrder.random ? randomize("order") : newOrder
+        )
+      }
     } catch (e) {
       log(e)
     } finally {
@@ -52,10 +53,9 @@ export default {
     const updatedOrder = ctx.request.body()
 
     try {
-      ctx.response.body = await Order.updateById(
-        String(ctx?.params?.id),
-        updatedOrder
-      )
+      ctx.response.body = {
+        data: await Order.updateById(String(ctx?.params?.id), updatedOrder)
+      }
     } catch (e) {
       log(e)
     } finally {
