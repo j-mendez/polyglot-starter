@@ -1,6 +1,6 @@
 # deno-rest-starter
 
-a deno rest starter application with focused on making tacos
+a deno rest starter focused on making tacos
 
 ## Getting Started
 
@@ -32,6 +32,13 @@ below are a list of custom middlewares in registration order.
 4. [validator](middlewares/validator.ts)
 4. [404](middlewares/errors.ts#L3)
 
+## Databases
+
+Below are a list of databases used. Mongodb is one of the databases used in the application. If your using docker and need an admin tool navigate to `localhost:8081`.
+
+1. [redis](databases/redis.ts)
+2. [mongo](databases/mongodb.ts)
+
 ## Testing
 
 The app is setup with assertion testing that handles redirection to valid responses for a rest api. When building new features handle the validation through assertions inside the file.
@@ -46,46 +53,12 @@ MONGO_DB_PORT=27017
 MONGO_DB_NAME=taco-rocket
 MONGO_DB_URL=mongodb://mongodb:27017/?compressors=zlib&gssapiServiceName=mongodb
 MONGO_DB_RETRY_TIMOUT=15000
+REDIS_DB_URL=redis
 ```
-
-## Database
-
-Mongodb is one of the databases used in the application. If your using docker and need an admin tool navigate to `localhost:8081`.
 
 ## Fixtures
 
-To get started with testing the api you can use the `fixtures` in the project as a starting point. In terminal run the scripts below. 
-
-### POST order
-create new order.
-```
-./fixtures/post-order.sh
-```
-create new random order.
-```
-./fixtures/post-random-order.sh
-```
-### GET orders
-retrieve all orders.
-```
-./fixtures/get-orders.sh
-```
-### GET order by id
-retrieve a single order by id, replace `$id` with the order id returned on create order.
-```
-./fixtures/get-order-by-id.sh "$id"
-```
-### DELETE order by id
-delete a single order by id, replace `$id` with the order id returned on create order.
-```
-./fixtures/delete-order-by-id.sh "$id"
-```
-
-### Test rate limit
-test rate limiter
-```
-./fixtures/test-rate-limit.sh
-```
+To get started with testing the api you can use the `fixtures` inside the project. For more information read [fixtures-doc](FIXTURES.md)
 
 ## Deploying
 
