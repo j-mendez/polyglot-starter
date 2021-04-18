@@ -15,25 +15,42 @@ const toggleRateLimiting = async () =>
 
 const body = JSON.stringify(testFixture)
 
-bench(async function postNewOrder(b): Promise<void> {
-  b.start()
-  await toggleRateLimiting()
+const postOrder = async () => {
+  const res = await fetch("http://127.0.0.1:8000/api/orders", {
+    method: "POST",
+    body,
+    headers: {
+      "Content-Type": "application/json"
+    }
+  })
 
-  for (let i = 0; i < 100; i++) {
-    const res = await fetch("http://127.0.0.1:8000/api/orders", {
-      method: "POST",
-      body,
-      headers: {
-        "Content-Type": "application/json"
-      }
-    })
+  const resBody = new Uint8Array(await res.arrayBuffer())
+  await Deno.stdout.write(resBody)
+}
 
-    const resBody = new Uint8Array(await res.arrayBuffer())
-    await Deno.stdout.write(resBody)
-    console.log(i + 1)
+bench({
+  name: "runs10ForSimultaneousX10",
+  runs: 10,
+  async func(b): Promise<void> {
+    b.start()
+    for (let i = 0; i < 10; i++) {
+      await postOrder()
+      console.log(i + 1)
+    }
+    b.stop()
   }
-  b.stop()
-  await toggleRateLimiting()
 })
 
-runBenchmarks()
+bench({
+  name: "runs10ForParallelX3",
+  runs: 10,
+  async func(b): Promise<void> {
+    b.start()
+    await Promise.all([postOrder(), postOrder(), postOrder()])
+    b.stop()
+  }
+})
+
+await toggleRateLimiting()
+await runBenchmarks()
+await toggleRateLimiting()
