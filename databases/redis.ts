@@ -2,6 +2,7 @@ import { green, bold, yellow, connectRedis, Redis } from "../deps.ts"
 
 class RedisDb {
   client?: Redis
+  #connected?: boolean = false
   constructor() {}
   connect = async (retry?: boolean) => {
     try {
@@ -9,7 +10,7 @@ class RedisDb {
         hostname: String(Deno.env.get("REDIS_DB_URL") || "127.0.0.1"),
         port: Deno.env.get("REDIS_DB_PORT") ?? 6379
       })
-
+      this.#connected = true
       console.log(green("Redis connection opened"))
     } catch (e) {
       console.log(yellow(`Redis connection error: ${e}`))
@@ -40,8 +41,15 @@ class RedisDb {
     return await this.client?.del(key)
   }
   close = async () => {
-    await this.client?.close()
-    console.log(bold("Redis connection closed"))
+    if (this.#connected) {
+      try {
+        await this.client?.close()
+        console.log(bold("Redis connection closed"))
+        this.#connected = false
+      } catch (e) {
+        console.error(e)
+      }
+    }
   }
 }
 

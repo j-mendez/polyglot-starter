@@ -3,12 +3,14 @@ import { OrderSchema } from "../types/order.ts"
 
 class MongoDb {
   client: MongoClient
+  #connected: boolean = false
   constructor() {
     this.client = new MongoClient()
   }
   connect = async (retry?: boolean) => {
     try {
       await this.client?.connect(Deno.env.get("MONGO_DB_URL") + "")
+      this.#connected = true
       console.log(green("MongoDb connection opened"))
     } catch (e) {
       console.log(yellow(`MongoDb connection error: ${e}`))
@@ -24,8 +26,15 @@ class MongoDb {
     return this.client?.database(Deno.env.get("MONGO_DB_NAME") + "")
   }
   close = async () => {
-    await this.client?.close()
-    console.log(bold("MongoDb connection closed"))
+    if (this.#connected) {
+      try {
+        await this.client?.close()
+        this.#connected = false
+        console.log(bold("MongoDb connection closed"))
+      } catch (e) {
+        console.error(e)
+      }
+    }
   }
 }
 
