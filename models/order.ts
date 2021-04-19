@@ -1,7 +1,7 @@
 import { mongodb } from "../databases/mongodb.ts"
 import { redis } from "../databases/redis.ts"
 import { MongoClient, Bson } from "../deps.ts"
-import { OrderSchema } from "../types/order.ts"
+import type { OrderSchema } from "../types/order.ts"
 
 class OrderModel {
   #mongodbClient: typeof mongodb

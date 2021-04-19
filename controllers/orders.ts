@@ -74,5 +74,9 @@ export default {
         return notFound(ctx)
       }
     }
+  },
+  renderOrdersListPage: async (ctx: AppContext) => {
+    ctx.response.type = "text/html"
+    ctx.response.body = orderViews.ordersList(await Order.find())
   }
 }

@@ -18,6 +18,14 @@ Make sure to have deno installed. If your using mac you can use `brew install de
 
 1. `deno run --allow-read --allow-env --allow-net main.ts`
 
+## Pages
+
+Pages are views that are server side rendered to html.
+
+| url                  | dynamic   | models                                                                                 | description                                                                                                     |
+| -------------------- | --------- | -------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| /pages/orders        | no        | Orders                                                                                 | Get a list of recent orders from redis                                                                          |
+
 ## Validation
 
 REST validation is done through [validator-middleware](middlewares/validator.ts). 
