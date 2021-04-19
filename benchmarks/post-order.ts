@@ -1,4 +1,10 @@
-import { runBenchmarks, bench } from "https://deno.land/std/testing/bench.ts"
+import {
+  runBenchmarks,
+  bench,
+  prettyBenchmarkResult,
+  prettyBenchmarkDown,
+  prettyBenchmarkProgress
+} from "../test-deps.ts"
 import { toggleRateLimiting } from "../utils/toggle-rate-limiter.ts"
 
 const testFixture = JSON.parse(Deno.readTextFileSync("./fixtures/order.json"))
@@ -14,8 +20,7 @@ const postOrder = async () => {
     }
   })
 
-  const resBody = new Uint8Array(await res.arrayBuffer())
-  await Deno.stdout.write(resBody)
+  await Deno.stdout.write(new Uint8Array(await res.arrayBuffer()))
 }
 
 bench({
@@ -42,5 +47,14 @@ bench({
 })
 
 await toggleRateLimiting()
-await runBenchmarks()
+await runBenchmarks({ silent: true }, prettyBenchmarkProgress())
+  .then(
+    prettyBenchmarkDown((md: string) =>
+      Deno.writeTextFile("./benchmarks/post-orders.md", md)
+    )
+  )
+  .then(prettyBenchmarkResult())
+  .catch((e: any) => {
+    console.error(e.stack)
+  })
 await toggleRateLimiting()

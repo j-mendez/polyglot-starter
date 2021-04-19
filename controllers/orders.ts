@@ -75,6 +75,17 @@ export default {
       }
     }
   },
+  searchOrders: async (ctx: AppContext) => {
+    try {
+      ctx.response.body = await Order.search(String(ctx?.params?.id))
+    } catch (e) {
+      log(e)
+    } finally {
+      if (!ctx.response.body) {
+        return apiError(ctx)
+      }
+    }
+  },
   renderOrdersListPage: async (ctx: AppContext) => {
     ctx.response.type = "text/html"
     ctx.response.body = orderViews.ordersList(await Order.find())

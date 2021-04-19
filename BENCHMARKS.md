@@ -8,46 +8,25 @@ Benchmarks for creating new orders between client and server - latency.
 
 ### Post
 
-Create a new order of a static set of data. Random orders are not used in test.
+Create a new order of a static set of data. Random orders are not used in test. Currently on every creation the order is updated through mongo -> redis -> and meilisearch. On average it takes about 25-50ms between micro-service insert.
+
+[View Benchmarks](benchmarks/post-orders.md)
 
 ```
-docker-compose exec core deno run --allow-run --allow-read  --allow-net --allow-env ./benchmarks/post-order.ts
-or
-deno run --allow-run --allow-read  --allow-net --allow-env ./benchmarks/post-order.ts
+docker-compose exec core deno run --allow-run --allow-read  --allow-write --allow-net --allow-env --allow-hrtime ./benchmarks/post-order.ts
+# or
+deno run --allow-run --allow-read  --allow-write --allow-net --allow-env --allow-hrtime ./benchmarks/post-order.ts
 ```
-
-#### Simultaneous
-
-10 simultaneous request x10
-
-Metrics: avg 510.6ms - per entry 50.05ms - max cpu 13%
-
-#### Parallel
-
-3 concurrent request x10
-
-Metrics: avg 75ms - per entry 25.05ms - max cpu 27%
-
 
 ### GET
 
 Get orders from collections redis(max:20) -> mongodb.
 
+[View Benchmarks](benchmarks/get-orders.md)
+
+
 ```
-docker-compose exec core deno run --allow-run --allow-read  --allow-net --allow-env ./benchmarks/get-order.ts
-or
-deno run --allow-run --allow-read  --allow-net --allow-env ./benchmarks/get-order.ts
+docker-compose exec core deno run --allow-run --allow-read  --allow-write --allow-net --allow-env --allow-hrtime ./benchmarks/get-order.ts 
+# or
+deno run --allow-run --allow-read  --allow-write --allow-net --allow-env --allow-hrtime ./benchmarks/get-order.ts
 ```
-
-#### Simultaneous
-
-10 simultaneous request x10
-
-Metrics: avg 40ms - per entry 4ms
-
-#### Parallel
-
-3 concurrent request x10
-
-Metrics: avg 5.4ms - per entry 1.6ms
-

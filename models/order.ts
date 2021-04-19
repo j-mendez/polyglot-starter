@@ -1,16 +1,24 @@
 import { mongodb } from "../databases/mongodb.ts"
 import { redis } from "../databases/redis.ts"
+import { meilisearch } from "../databases/meilisearch.ts"
 import { MongoClient, Bson } from "../deps.ts"
 import type { OrderSchema } from "../types/order.ts"
 
 class OrderModel {
   #mongodbClient: typeof mongodb
   #redisClient: typeof redis
+  #meilisearchClient: typeof meilisearch
   #collectionName: string = "Orders"
-  constructor(mongodbClient: typeof mongodb, redisClient: typeof redis) {
+  constructor(
+    mongodbClient: typeof mongodb,
+    redisClient: typeof redis,
+    meilisearchClient: typeof meilisearch
+  ) {
     this.#mongodbClient = mongodbClient
     this.#redisClient = redisClient
+    this.#meilisearchClient = meilisearchClient
   }
+
   private async get(id?: string): Promise<OrderSchema | OrderSchema[]> {
     try {
       let result
@@ -33,11 +41,11 @@ class OrderModel {
         }
       }
 
-      await this.clientsDisconnect()
-
       return result
     } catch (error) {
       throw error
+    } finally {
+      await this.clientsDisconnect()
     }
   }
 
@@ -50,17 +58,18 @@ class OrderModel {
   async insert(order: OrderSchema): Promise<{ id: Bson.ObjectId | string }> {
     try {
       await this.clientsConnect()
-
       const newOrder = (await this?.ordersCollection?.insertOne(
         order
       )) as Bson.ObjectId
-      await this.pipelineNewOrder(newOrder + "", order)
 
-      await this.clientsDisconnect()
+      await this.pipelineNewOrder(newOrder + "", order)
+      await this.#meilisearchClient?.addDocuments(this.#collectionName, [order])
 
       return { id: newOrder }
     } catch (error) {
       throw error
+    } finally {
+      await this.clientsDisconnect()
     }
   }
 
@@ -94,12 +103,16 @@ class OrderModel {
         { $set: order }
       )
       await this.#redisClient.set(id + "", JSON.stringify(order))
-
-      await this.clientsDisconnect()
+      await this.#meilisearchClient?.updateDocuments(
+        this.#collectionName,
+        id + ""
+      )
 
       return { id: String(updatedOrder?.upsertedId) }
     } catch (error) {
       throw error
+    } finally {
+      await this.clientsDisconnect()
     }
   }
 
@@ -111,32 +124,49 @@ class OrderModel {
         _id: new Bson.ObjectId(id)
       })
       await this.pipelineDeleteOrder(id + "")
-
-      await this.clientsDisconnect()
+      await this.#meilisearchClient?.deleteDocument(
+        this.#collectionName,
+        id + ""
+      )
 
       return result
     } catch (error) {
       throw error
+    } finally {
+      await this.clientsDisconnect()
+    }
+  }
+
+  // only run on meilisearch for now
+  async search(query: string) {
+    try {
+      await this.#meilisearchClient?.connect()
+      return await this.#meilisearchClient?.search(this.#collectionName, query)
+    } catch (e) {
+      console.error(e)
+    } finally {
+      await this.#meilisearchClient?.close()
     }
   }
 
   async clientsConnect() {
     Promise.all([
       await this.#mongodbClient?.connect(),
-      await this.#redisClient?.connect()
+      await this.#redisClient?.connect(),
+      await this.#meilisearchClient?.connect()
     ])
   }
 
   async clientsDisconnect() {
     Promise.all([
       await this.#mongodbClient?.close(),
-      await this.#redisClient?.close()
+      await this.#redisClient?.close(),
+      await this.#meilisearchClient?.close()
     ])
   }
 
   async pipelineNewOrder(id: string, order: OrderSchema) {
     try {
-      const pl = this.#redisClient?.client?.pipeline()
       const allOrders =
         (await this.#redisClient.get(this.#collectionName)) || []
 
@@ -146,11 +176,11 @@ class OrderModel {
 
       allOrders.unshift(order)
 
-      if (pl) {
-        pl.set(id, JSON.stringify(order))
-        pl.set(this.#collectionName, JSON.stringify(allOrders))
-        await pl.flush()
-      }
+      await this.#redisClient.set(id, JSON.stringify(order))
+      await this.#redisClient.set(
+        this.#collectionName,
+        JSON.stringify(allOrders)
+      )
     } catch (e) {
       console.error(e)
     }
@@ -158,22 +188,21 @@ class OrderModel {
 
   async pipelineDeleteOrder(id: string) {
     try {
-      const pl = this.#redisClient?.client?.pipeline()
       const allOrders =
         (await this.#redisClient.get(this.#collectionName)) || []
       const newOrders = allOrders.filter(
         (collection: OrderSchema) => String(collection._id) !== id
       )
 
-      if (pl) {
-        pl.del(id)
-        pl.set(this.#collectionName, JSON.stringify(newOrders))
-        await pl.flush()
-      }
+      await this.#redisClient.del(id)
+      await this.#redisClient.set(
+        this.#collectionName,
+        JSON.stringify(newOrders)
+      )
     } catch (e) {
       console.error(e)
     }
   }
 }
 
-export const Order = new OrderModel(mongodb, redis)
+export const Order = new OrderModel(mongodb, redis, meilisearch)

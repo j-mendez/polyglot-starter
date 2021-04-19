@@ -1,8 +1,14 @@
-import { runBenchmarks, bench } from "https://deno.land/std/testing/bench.ts"
+import {
+  runBenchmarks,
+  bench,
+  prettyBenchmarkResult,
+  prettyBenchmarkDown,
+  prettyBenchmarkProgress
+} from "../test-deps.ts"
 import { toggleRateLimiting } from "../utils/toggle-rate-limiter.ts"
 
-const getOrder = async () => {
-  const res = await fetch("http://127.0.0.1:8000/api/orders", {
+const getOrder = async (endpoint?: string) => {
+  const res = await fetch(`http://127.0.0.1:8000/${endpoint ?? "api/orders"}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json"
@@ -36,6 +42,31 @@ bench({
   }
 })
 
+const searchEndPoint = "api/orders/search/simple order"
+
+bench({
+  name: "runs10ForSearchParallelX3",
+  runs: 10,
+  async func(b): Promise<void> {
+    b.start()
+    await Promise.all([
+      getOrder(searchEndPoint),
+      getOrder(searchEndPoint),
+      getOrder(searchEndPoint)
+    ])
+    b.stop()
+  }
+})
+
 await toggleRateLimiting()
-await runBenchmarks()
+await runBenchmarks({ silent: true }, prettyBenchmarkProgress())
+  .then(
+    prettyBenchmarkDown((md: string) =>
+      Deno.writeTextFile("./benchmarks/get-orders.md", md)
+    )
+  )
+  .then(prettyBenchmarkResult())
+  .catch((e: any) => {
+    console.error(e.stack)
+  })
 await toggleRateLimiting()

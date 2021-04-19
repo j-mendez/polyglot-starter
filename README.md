@@ -1,6 +1,6 @@
 # deno-rest-starter
 
-a deno rest starter focused on making tacos
+a production ready deno starter focused on making tacos. Setup with redis, mongodb, and meilisearch model syncing.
 
 ## Getting Started
 
@@ -42,10 +42,11 @@ below are a list of custom middlewares in registration order.
 
 ## Databases
 
-Below are a list of databases used. Mongodb is one of the databases used in the application. If your using docker and need an admin tool navigate to `localhost:8081`.
+Below are a list of databases used. Mongodb is one of the databases used in the application. If your using docker and need an admin tool navigate to `localhost:8081`. We use [meilisearch](https://github.com/meilisearch/MeiliSearch) for the search server.
 
 1. [redis](databases/redis.ts)
 2. [mongo](databases/mongodb.ts)
+3. [meilisearch](databases/meilisearch.ts)
 
 ## Testing
 
