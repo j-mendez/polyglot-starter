@@ -33,11 +33,11 @@ bench({
 })
 
 bench({
-  name: "runs10ForParallelX3",
+  name: "runs10ForParallelX2",
   runs: 10,
   async func(b): Promise<void> {
     b.start()
-    await Promise.all([getOrder(), getOrder(), getOrder()])
+    await Promise.all([getOrder(), getOrder()])
     b.stop()
   }
 })
@@ -45,15 +45,11 @@ bench({
 const searchEndPoint = "api/orders/search/simple order"
 
 bench({
-  name: "runs10ForSearchParallelX3",
+  name: "runs10ForSearchParallelX2",
   runs: 10,
   async func(b): Promise<void> {
     b.start()
-    await Promise.all([
-      getOrder(searchEndPoint),
-      getOrder(searchEndPoint),
-      getOrder(searchEndPoint)
-    ])
+    await Promise.all([getOrder(searchEndPoint), getOrder(searchEndPoint)])
     b.stop()
   }
 })
@@ -62,7 +58,9 @@ await toggleRateLimiting()
 await runBenchmarks({ silent: true }, prettyBenchmarkProgress())
   .then(
     prettyBenchmarkDown((md: string) =>
-      Deno.writeTextFile("./benchmarks/get-orders.md", md)
+      Deno.writeTextFile("./benchmarks/get-orders.md", md).catch((e: any) => {
+        console.error(e.stack)
+      })
     )
   )
   .then(prettyBenchmarkResult())

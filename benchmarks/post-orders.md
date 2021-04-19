@@ -1,7 +1,7 @@
 
 |Name|Runs|Total (ms)|Average (ms)|
 |:--|--:|--:|--:|
-|runs10ForSimultaneousX10|10|5633.833|563.383|
-|runs10ForParallelX3|10|631.112|63.111|
+|runs10ForSimultaneousX10|10|5718.000|571.800|
+|runs10ForParallelX2|10|612.000|61.200|
 
 

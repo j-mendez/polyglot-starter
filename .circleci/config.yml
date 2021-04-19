@@ -1,0 +1,48 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: hayd/alpine-deno:1.9.0
+    environment:
+      TEST_RESULTS: /tmp/test-results
+
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Install Docker client
+          command: |
+            set -x
+            VER="17.03.0-ce"
+            apk update && apk add curl curl-dev bash
+            curl -L -o /tmp/docker-$VER.tgz https://get.docker.com/builds/Linux/x86_64/docker-$VER.tgz
+            tar -xz -C /tmp -f /tmp/docker-$VER.tgz
+            mv /tmp/docker/* /usr/bin
+
+      - run:
+          name: Install Docker Compose
+          command: |
+            set -x
+            curl -L https://github.com/docker/compose/releases/download/1.11.2/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+            chmod +x /usr/local/bin/docker-compose
+
+      - run:
+          name: Start container and verify it's working
+          command: |
+            set -x
+            docker-compose --file ci.yml up -d
+        
+      - run:
+          name: Run benchmarks
+          command: |
+            set -x
+            docker-compose ps
+            docker-compose exec core deno run --allow-run --allow-read  --allow-write --allow-net --allow-env --allow-hrtime ./benchmarks/post-order.ts
+            docker-compose exec core deno run --allow-run --allow-read  --allow-write --allow-net --allow-env --allow-hrtime ./benchmarks/get-order.ts
+
+      - store_artifacts:
+          path: /tmp/test-results
+          destination: raw-test-output
+
+      - store_test_results:
+          path: /tmp/test-results

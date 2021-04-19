@@ -37,11 +37,11 @@ bench({
 })
 
 bench({
-  name: "runs10ForParallelX3",
-  runs: 10,
+  name: "runs6ForParallelX2",
+  runs: 6,
   async func(b): Promise<void> {
     b.start()
-    await Promise.all([postOrder(), postOrder(), postOrder()])
+    await Promise.all([postOrder(), postOrder()])
     b.stop()
   }
 })
@@ -50,7 +50,9 @@ await toggleRateLimiting()
 await runBenchmarks({ silent: true }, prettyBenchmarkProgress())
   .then(
     prettyBenchmarkDown((md: string) =>
-      Deno.writeTextFile("./benchmarks/post-orders.md", md)
+      Deno.writeTextFile("./benchmarks/post-orders.md", md).catch((e: any) => {
+        console.error(e.stack)
+      })
     )
   )
   .then(prettyBenchmarkResult())
