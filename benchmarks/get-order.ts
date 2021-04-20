@@ -4,8 +4,8 @@ import {
   prettyBenchmarkResult,
   prettyBenchmarkDown,
   prettyBenchmarkProgress
-} from "../test-deps.ts"
-import { toggleRateLimiting } from "../utils/toggle-rate-limiter.ts"
+} from "./test-deps.ts"
+import { toggleRateLimiting } from "../src/utils/toggle-rate-limiter.ts"
 
 const getOrder = async (endpoint?: string) => {
   const res = await fetch(`http://127.0.0.1:8000/${endpoint ?? "api/orders"}`, {

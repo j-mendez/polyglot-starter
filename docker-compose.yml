@@ -8,7 +8,10 @@ services:
     networks:
       - backend
     volumes:
-      - ./:/usr/src/app
+      - ./src:/usr/src/app/src
+      - ./fixtures:/usr/src/app/fixtures
+      - ./benchmarks:/usr/src/app/benchmarks
+
     ports:
       - '${PORT:-8000}:${PORT:-8000}'
     environment:

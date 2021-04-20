@@ -8,12 +8,12 @@ WORKDIR /usr/src/app
 
 USER deno
 
-COPY ./deps.ts ./deps.ts
+COPY ./src/deps.ts ./src/deps.ts
 
-RUN deno cache ./deps.ts
+RUN deno cache ./src/deps.ts
 
 ADD . .
 
-RUN deno cache ./main.ts
+RUN deno cache ./src/main.ts
 
-CMD ["run", "--allow-read", "--allow-env", "--allow-net", "main.ts"]
+CMD ["run", "--allow-read", "--allow-env", "--allow-net", "./src/main.ts"]
