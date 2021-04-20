@@ -33,10 +33,15 @@ jobs:
             docker-compose --file ci.yml up -d
         
       - run:
+          name: Run tests
+          command: |
+            set -x
+            docker-compose exec core deno test --allow-read
+
+      - run:
           name: Run benchmarks
           command: |
             set -x
-            docker-compose ps
             docker-compose exec core deno run --allow-run --allow-read  --allow-write --allow-net --allow-env --allow-hrtime ./benchmarks/post-order.ts
             docker-compose exec core deno run --allow-run --allow-read  --allow-write --allow-net --allow-env --allow-hrtime ./benchmarks/get-order.ts
 

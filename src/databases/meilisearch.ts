@@ -11,7 +11,7 @@ class Meilisearch {
         host: `http://${
           Deno.env.get("MEILISEARCH_DB_URL") || "127.0.0.1"
         }:7700`,
-        apiKey: "masterKey"
+        apiKey: Deno.env.get("MEILISEARCH_DB_API_KEY")
       })
       this.#connected = true
       console.log(green("Meilisearch connection opened"))

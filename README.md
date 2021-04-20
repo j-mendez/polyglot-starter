@@ -54,6 +54,8 @@ Below are a list of databases used. Mongodb is one of the databases used in the 
 
 The app is setup with assertion testing that handles redirection to valid responses for a rest api. When building new features handle the validation through assertions inside the file.
 
+To run unit test|e2e|intg run `deno test --allow-read`.
+
 ### Benchmarks
 
 The benchmarks are located in the [benchmarks](/benchmarks) directory. On each suite the rate limiting middleware is disabled. Please do not run in production since this will adjust the runtime of your server. Read [benchmarks-docs](BENCHMARKS.md) for more information on the type of test, how to, average, and etc. 
@@ -68,6 +70,7 @@ MONGO_DB_PORT=27017
 MONGO_DB_NAME=taco-rocket
 MONGO_DB_URL=mongodb://mongodb:27017/?compressors=zlib&gssapiServiceName=mongodb
 MONGO_DB_RETRY_TIMOUT=15000
+MEILISEARCH_DB_API_KEY=masterKey
 REDIS_DB_URL=redis
 SYSTEM_ADMIN_PASSWORD=password
 ```

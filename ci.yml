@@ -25,7 +25,7 @@ services:
   meilisearch:
     container_name: meilisearch
     image: getmeili/meilisearch
-    command: ./meilisearch --master-key=masterKey --no-analytics=true
+    command: ./meilisearch --master-key=${MEILISEARCH_DB_API_KEY:-masterKey} --no-analytics=true
     networks:
       - backend
          
