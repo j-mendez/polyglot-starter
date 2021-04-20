@@ -27,9 +27,13 @@ const hasOrderItems = (ctx: AppContext, newOrder: OrderSchema) => {
 const validateIngredients = (
   ctx: AppContext,
   { key, value, validator }: IngredientsOptions,
-  customIngredients?: any
+  customIngredients?: unknown
 ) => {
-  if (!customIngredients?.includes(key)) {
+  if (
+    typeof customIngredients !== "undefined" &&
+    Array.isArray(customIngredients) &&
+    !customIngredients?.includes(key)
+  ) {
     const validators = Object.values(validator).filter(
       item => typeof item !== "number"
     )

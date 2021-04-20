@@ -3,7 +3,7 @@ import { apiError } from "../validators/rest/api-error.ts"
 import { log } from "../utils/log.ts"
 
 export default {
-  toggleRateLimit: async (ctx: AppContext) => {
+  toggleRateLimit: (ctx: AppContext) => {
     try {
       if (
         ctx?.request?.headers?.get("Authorization") ===

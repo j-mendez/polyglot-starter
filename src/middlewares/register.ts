@@ -6,8 +6,8 @@ import { notFound, errorHandler } from "./errors.ts"
 import { rateLimit } from "./rate-limiting.ts"
 import { validator } from "./validator.ts"
 
-const registerMiddlewares = (app: Application) => {
-  ;[
+const registerMiddlewares = (app: Application) =>
+  [
     rateLimit,
     bodyParser,
     errorHandler,
@@ -20,6 +20,5 @@ const registerMiddlewares = (app: Application) => {
   ].forEach(middleware => {
     app.use(middleware)
   })
-}
 
 export { registerMiddlewares }

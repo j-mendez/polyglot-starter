@@ -22,7 +22,7 @@ class RedisDb {
       }
     }
   }
-  set = async (key: string, value: any) => {
+  set = async (key: string, value: string) => {
     return await this.client?.set(key, value)
   }
   get = async (key: string) => {

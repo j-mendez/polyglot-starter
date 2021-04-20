@@ -29,14 +29,13 @@ export type Ingredients = {
   protein: ProteinOptions
   cheese: CheeseOptions
   toppings: ToppingsOptions[]
-
   [x: string]: any
 }
 
 export type IngredientsOptions = {
   validator: typeof Toppings | typeof Wrap | typeof Protein | typeof Cheese
   key: keyof Ingredients
-  value: ToppingsOptions | WrapOptions | ProteinOptions | CheeseOptions | any
+  value: ToppingsOptions[] | WrapOptions | ProteinOptions | CheeseOptions
 }
 
 export type Item = {

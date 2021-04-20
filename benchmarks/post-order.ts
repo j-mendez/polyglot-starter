@@ -50,13 +50,15 @@ await toggleRateLimiting()
 await runBenchmarks({ silent: true }, prettyBenchmarkProgress())
   .then(
     prettyBenchmarkDown((md: string) =>
-      Deno.writeTextFile("./benchmarks/post-orders.md", md).catch((e: any) => {
-        console.error(e.stack)
-      })
+      Deno.writeTextFile("./benchmarks/post-orders.md", md).catch(
+        (e: Error) => {
+          console.error(e.stack)
+        }
+      )
     )
   )
   .then(prettyBenchmarkResult())
-  .catch((e: any) => {
+  .catch((e: Error) => {
     console.error(e.stack)
   })
 await toggleRateLimiting()

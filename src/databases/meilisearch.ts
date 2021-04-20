@@ -25,7 +25,7 @@ class Meilisearch {
       }
     }
   }
-  addDocuments = async (collection: string, documents: any) => {
+  addDocuments = async (collection: string, documents: unknown) => {
     if (typeof this.client !== "undefined") {
       try {
         const index = this.client.index(collection)
@@ -47,7 +47,7 @@ class Meilisearch {
       }
     }
   }
-  updateDocuments = async (collection: string, documents: any) => {
+  updateDocuments = async (collection: string, documents: unknown) => {
     if (typeof this.client !== "undefined") {
       try {
         const index = this.client?.index(collection)
@@ -69,7 +69,7 @@ class Meilisearch {
       }
     }
   }
-  close = async () => {
+  close = () => {
     if (this.#connected) {
       try {
         this.client = undefined

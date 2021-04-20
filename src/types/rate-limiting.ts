@@ -1,6 +1,6 @@
 class RateLimiterMemory {
-  constructor(options: any) {}
-  consume(ip: string, points: number): any {}
+  constructor(options: unknown) {}
+  consume(ip: string, points: number): void {}
 }
 
 export interface RateLimiter {
