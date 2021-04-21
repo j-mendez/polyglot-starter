@@ -16,6 +16,7 @@ export const randomize = (type: string) => {
 
     const items = new Array(randomNumberFrom(5, 1)).fill(null).map(() => {
       return {
+        name: `random - ${randomNumberFrom(1000)}`,
         ingredients: {
           toppings: new Array(randomNumberFrom(3, 1))
             .fill(null)

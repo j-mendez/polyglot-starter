@@ -28,9 +28,10 @@ export const orderViews = {
     <p>${orders?.length} orders visible</p>
     <ul>${orders
       .map((order: OrderSchema, index: number) => {
-        return `<li>${order.items.map((item: Item) => {
-          const { name, ingredients, qty } = item
-          return `<details>
+        return `<li>${order.items
+          .map((item: Item) => {
+            const { name, ingredients, qty } = item
+            return `<details>
                       <summary><b>${name}</b> - ${order._id}</summary>
                       <p>Qty: ${qty}</p>
                       <u>Ingredients</u>
@@ -40,7 +41,8 @@ export const orderViews = {
                         })
                         .join("")}
                 </details>`
-        })}</li>`
+          })
+          .join("")}</li>`
       })
       .join("")}
     </ul>`
