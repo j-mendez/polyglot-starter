@@ -103,7 +103,7 @@ class OrderModel {
         },
         { $set: order }
       )
-      await this.#redisClient.set(id + "", JSON.stringify(order))
+      await this.#redisClient.update(id + "", JSON.stringify(order))
       await this.#meilisearchClient?.update(this.#collectionName, id + "")
 
       return { id: String(updatedOrder?.upsertedId) }

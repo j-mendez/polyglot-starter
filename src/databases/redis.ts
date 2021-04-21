@@ -19,7 +19,14 @@ class RedisDb extends Connector {
     })
   }
   set = async (key: string, value: string) => {
-    return await this.client?.set(key, value)
+    try {
+      return await this.client?.set(key, value)
+    } catch (e) {
+      console.error(e)
+    }
+  }
+  update = async (key: string, value: string) => {
+    return await this.set(key, value)
   }
   get = async (key: string) => {
     const result = await this.client?.get(key)
@@ -34,7 +41,11 @@ class RedisDb extends Connector {
     return null
   }
   del = async (key: string) => {
-    return await this.client?.del(key)
+    try {
+      return await this.client?.del(key)
+    } catch (e) {
+      console.error(e)
+    }
   }
 }
 
