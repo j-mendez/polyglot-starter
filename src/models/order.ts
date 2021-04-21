@@ -49,6 +49,7 @@ class OrderModel {
     }
   }
 
+  // TODO: move collection outside model
   get ordersCollection() {
     return this.#mongodbClient?.db?.collection<OrderSchema>(
       this.#collectionName
@@ -63,7 +64,7 @@ class OrderModel {
       )) as Bson.ObjectId
 
       await this.pipelineNewOrder(newOrder + "", order)
-      await this.#meilisearchClient?.addDocuments(this.#collectionName, [order])
+      await this.#meilisearchClient?.set(this.#collectionName, [order])
 
       return { id: newOrder }
     } catch (error) {
@@ -103,10 +104,7 @@ class OrderModel {
         { $set: order }
       )
       await this.#redisClient.set(id + "", JSON.stringify(order))
-      await this.#meilisearchClient?.updateDocuments(
-        this.#collectionName,
-        id + ""
-      )
+      await this.#meilisearchClient?.update(this.#collectionName, id + "")
 
       return { id: String(updatedOrder?.upsertedId) }
     } catch (error) {
@@ -124,10 +122,7 @@ class OrderModel {
         _id: new Bson.ObjectId(id)
       })
       await this.pipelineDeleteOrder(id + "")
-      await this.#meilisearchClient?.deleteDocument(
-        this.#collectionName,
-        id + ""
-      )
+      await this.#meilisearchClient?.del(this.#collectionName, id + "")
 
       return result
     } catch (error) {
@@ -141,7 +136,7 @@ class OrderModel {
   async search(query: string) {
     try {
       await this.#meilisearchClient?.connect()
-      return await this.#meilisearchClient?.search(this.#collectionName, query)
+      return await this.#meilisearchClient?.get(this.#collectionName, query)
     } catch (e) {
       console.error(e)
     } finally {

@@ -1,83 +1,52 @@
 import { green, bold, yellow, MeiliSearchClient } from "../deps.ts"
 import type { Search } from "../types/search.ts"
+import { Connector } from "./connector.ts"
 
-class Meilisearch {
-  client?: Search
-  #connected?: boolean = false
-  constructor() {}
-  connect = async (retry?: boolean) => {
-    try {
-      this.client = await new MeiliSearchClient({
+class Meilisearch extends Connector {
+  client: Search | null
+  connectTimeout: number = Number(Deno.env.get("MEILISEARCH_DB_RETRY_TIMOUT"))
+  constructor() {
+    super()
+    this.client = null
+  }
+  connect(): Promise<void> {
+    return super.connect(false, {
+      name: "Meilisearch",
+      client: new MeiliSearchClient({
         host: `http://${
           Deno.env.get("MEILISEARCH_DB_URL") || "127.0.0.1"
         }:7700`,
         apiKey: Deno.env.get("MEILISEARCH_DB_API_KEY")
-      })
-      this.#connected = true
-      console.log(green("Meilisearch connection opened"))
+      }),
+      setClient: true
+    })
+  }
+  set = async (collection: string, documents: unknown[]) => {
+    try {
+      return await this.client?.index(collection)?.addDocuments(documents)
     } catch (e) {
-      console.log(yellow(`Meilisearch connection error: ${e}`))
-      if (retry) {
-        setTimeout(
-          this.connect,
-          Number(Deno.env.get("MEILISEARCH_DB_RETRY_TIMOUT")) || 15000
-        )
-      }
+      console.error(e)
     }
   }
-  addDocuments = async (collection: string, documents: unknown) => {
-    if (typeof this.client !== "undefined") {
-      try {
-        const index = this.client.index(collection)
-
-        return await index?.addDocuments(documents)
-      } catch (e) {
-        console.error(e)
-      }
+  get = async (collection: string, query: string) => {
+    try {
+      return await this.client?.index(collection)?.search(query)
+    } catch (e) {
+      console.error(e)
     }
   }
-  search = async (collection: string, query: string) => {
-    if (typeof this.client !== "undefined") {
-      try {
-        const index = this.client?.index(collection)
-
-        return await index.search(query)
-      } catch (e) {
-        console.error(e)
-      }
+  update = async (collection: string, documents: unknown) => {
+    try {
+      return await this.client?.index(collection)?.updateDocuments([documents])
+    } catch (e) {
+      console.error(e)
     }
   }
-  updateDocuments = async (collection: string, documents: unknown) => {
-    if (typeof this.client !== "undefined") {
-      try {
-        const index = this.client?.index(collection)
-
-        return await index?.updateDocuments([documents])
-      } catch (e) {
-        console.error(e)
-      }
-    }
-  }
-  deleteDocument = async (collection: string, id: string | number) => {
-    if (typeof this.client !== "undefined") {
-      try {
-        const index = this.client?.index(collection)
-
-        return await index?.deleteDocument(id)
-      } catch (e) {
-        console.error(e)
-      }
-    }
-  }
-  close = () => {
-    if (this.#connected) {
-      try {
-        this.client = undefined
-        console.log(bold("Meilisearch connection closed"))
-        this.#connected = false
-      } catch (e) {
-        console.error(e)
-      }
+  del = async (collection: string, id: string | number) => {
+    try {
+      return await this.client?.index(collection)?.deleteDocument(id)
+    } catch (e) {
+      console.error(e)
     }
   }
 }

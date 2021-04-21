@@ -1,26 +1,22 @@
 import { green, bold, yellow, connectRedis, Redis } from "../deps.ts"
+import { Connector } from "./connector.ts"
 
-class RedisDb {
-  client?: Redis
-  #connected?: boolean = false
-  constructor() {}
-  connect = async (retry?: boolean) => {
-    try {
-      this.client = await connectRedis({
+class RedisDb extends Connector {
+  client: Redis | null
+  connectTimeout: number = Number(Deno.env.get("REDIS_DB_RETRY_TIMOUT"))
+  constructor() {
+    super()
+    this.client = null
+  }
+  connect(): Promise<void> {
+    return super.connect(false, {
+      name: "Redis",
+      client: connectRedis({
         hostname: String(Deno.env.get("REDIS_DB_URL") || "127.0.0.1"),
         port: Deno.env.get("REDIS_DB_PORT") ?? 6379
-      })
-      this.#connected = true
-      console.log(green("Redis connection opened"))
-    } catch (e) {
-      console.log(yellow(`Redis connection error: ${e}`))
-      if (retry) {
-        setTimeout(
-          this.connect,
-          Number(Deno.env.get("REDIS_DB_RETRY_TIMOUT")) || 15000
-        )
-      }
-    }
+      }),
+      setClient: true
+    })
   }
   set = async (key: string, value: string) => {
     return await this.client?.set(key, value)
@@ -39,17 +35,6 @@ class RedisDb {
   }
   del = async (key: string) => {
     return await this.client?.del(key)
-  }
-  close = async () => {
-    if (this.#connected) {
-      try {
-        await this.client?.close()
-        console.log(bold("Redis connection closed"))
-        this.#connected = false
-      } catch (e) {
-        console.error(e)
-      }
-    }
   }
 }
 

@@ -1,40 +1,23 @@
 import { green, bold, yellow, MongoClient, Database } from "../deps.ts"
 import { OrderSchema } from "../types/order.ts"
+import { Connector } from "./connector.ts"
 
-class MongoDb {
-  client: MongoClient
-  #connected: boolean = false
+class MongoDb extends Connector {
+  client: MongoClient | null
+  connectTimeout: number = Number(Deno.env.get("MONGO_DB_RETRY_TIMOUT"))
   constructor() {
+    super()
     this.client = new MongoClient()
   }
-  connect = async (retry?: boolean) => {
-    try {
-      await this.client?.connect(Deno.env.get("MONGO_DB_URL") + "")
-      this.#connected = true
-      console.log(green("MongoDb connection opened"))
-    } catch (e) {
-      console.log(yellow(`MongoDb connection error: ${e}`))
-      if (retry) {
-        setTimeout(
-          this.connect,
-          Number(Deno.env.get("MONGO_DB_RETRY_TIMOUT")) || 15000
-        )
-      }
-    }
+  connect(): Promise<void> {
+    return super.connect(false, {
+      name: "MongoDb",
+      client: this.client?.connect(Deno.env.get("MONGO_DB_URL") + ""),
+      setClient: false
+    })
   }
   get db() {
     return this.client?.database(Deno.env.get("MONGO_DB_NAME") + "")
-  }
-  close = async () => {
-    if (this.#connected) {
-      try {
-        await this.client?.close()
-        this.#connected = false
-        console.log(bold("MongoDb connection closed"))
-      } catch (e) {
-        console.error(e)
-      }
-    }
   }
 }
 
