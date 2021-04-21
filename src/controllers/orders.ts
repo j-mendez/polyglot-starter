@@ -88,6 +88,11 @@ export default {
   },
   renderOrdersListPage: async (ctx: AppContext) => {
     ctx.response.type = "text/html"
-    ctx.response.body = orderViews.ordersList(await Order.find())
+    ctx.response.body = orderViews.ordersList(
+      await Order.find().catch(e => {
+        console.error(e)
+        return []
+      })
+    )
   }
 }

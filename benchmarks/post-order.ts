@@ -37,8 +37,8 @@ bench({
 })
 
 bench({
-  name: "runs6ForParallelX2",
-  runs: 6,
+  name: "runs5ForParallelX2",
+  runs: 5,
   async func(b): Promise<void> {
     b.start()
     await Promise.all([postOrder(), postOrder()])
