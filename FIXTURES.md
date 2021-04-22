@@ -31,7 +31,6 @@ search orders by query, replace `$query` with a valid property from the order li
 ```
 ./fixtures/search-order-by-query.sh `$query`
 ```
-
 ### Test rate limit
 test rate limiter
 ```

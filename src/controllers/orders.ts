@@ -66,7 +66,7 @@ export default {
   },
   deleteOrderById: async (ctx: AppContext) => {
     try {
-      ctx.response.body = await Order.deleteById(ctx?.params?.id)
+      ctx.response.body = await Order.deleteById(String(ctx?.params?.id))
     } catch (e) {
       log(e)
     } finally {

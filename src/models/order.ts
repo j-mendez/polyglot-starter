@@ -21,24 +21,12 @@ class OrderModel {
 
   private async get(id?: string): Promise<OrderSchema | OrderSchema[]> {
     try {
-      let result
       await this.#redisClient?.connect()
-      if (!id) {
-        result = await this.#redisClient?.get(this.#collectionName)
-        if (!result?.length) {
-          await this.#mongodbClient?.connect()
-          result = (await this?.ordersCollection
-            ?.find()
-            ?.toArray()) as OrderSchema[]
-        }
-      } else {
-        result = await this.#redisClient?.get(id)
-        if (!result) {
-          await this.#mongodbClient?.connect()
-          result = (await this?.ordersCollection?.findOne({
-            _id: new Bson.ObjectId(id)
-          })) as OrderSchema
-        }
+      let result = await this.#redisClient?.get(id ?? this.#collectionName)
+
+      if (!result) {
+        await this.#mongodbClient?.connect()
+        result = await this.#mongodbClient?.get(this.#collectionName, id)
       }
 
       return result
@@ -49,24 +37,21 @@ class OrderModel {
     }
   }
 
-  // TODO: move collection outside model
-  get ordersCollection() {
-    return this.#mongodbClient?.db?.collection<OrderSchema>(
-      this.#collectionName
-    )
-  }
-
   async insert(order: OrderSchema): Promise<{ id: Bson.ObjectId | string }> {
     try {
       await this.clientsConnect()
-      const newOrder = (await this?.ordersCollection?.insertOne(
+
+      const orderId = await this.#mongodbClient?.set(
+        this.#collectionName,
         order
-      )) as Bson.ObjectId
+      )
 
-      await this.pipelineNewOrder(newOrder + "", order)
-      await this.#meilisearchClient?.set(this.#collectionName, [order])
+      await Promise.all([
+        this.pipelineNewOrder(orderId + "", order),
+        this.#meilisearchClient?.set(this.#collectionName, [order])
+      ])
 
-      return { id: newOrder }
+      return { id: orderId }
     } catch (error) {
       throw error
     } finally {
@@ -91,20 +76,22 @@ class OrderModel {
   }
 
   async updateById(
-    id?: string,
-    order?: OrderSchema
+    id: string,
+    order: OrderSchema
   ): Promise<{ id: Bson.ObjectId | string }> {
     try {
       await this.clientsConnect()
 
-      const updatedOrder = await this?.ordersCollection?.updateOne(
-        {
-          _id: new Bson.ObjectId(id)
-        },
-        { $set: order }
+      const updatedOrder = await this.#mongodbClient?.update(
+        this.#collectionName,
+        id,
+        order
       )
-      await this.#redisClient.update(id + "", JSON.stringify(order))
-      await this.#meilisearchClient?.update(this.#collectionName, id + "")
+
+      await Promise.all([
+        this.#redisClient.update(id, JSON.stringify(order)),
+        this.#meilisearchClient?.update(this.#collectionName, id)
+      ])
 
       return { id: String(updatedOrder?.upsertedId) }
     } catch (error) {
@@ -114,17 +101,18 @@ class OrderModel {
     }
   }
 
-  async deleteById(id?: string): Promise<number | undefined> {
+  async deleteById(id: string): Promise<string | undefined> {
     try {
       await this.clientsConnect()
 
-      const result = await this?.ordersCollection?.deleteOne({
-        _id: new Bson.ObjectId(id)
-      })
-      await this.pipelineDeleteOrder(id + "")
-      await this.#meilisearchClient?.del(this.#collectionName, id + "")
+      const result = await this.#mongodbClient?.del(this.#collectionName, id)
 
-      return result
+      await Promise.all([
+        this.pipelineDeleteOrder(id),
+        this.#meilisearchClient?.del(this.#collectionName, id)
+      ])
+
+      return result + ""
     } catch (error) {
       throw error
     } finally {
@@ -132,7 +120,7 @@ class OrderModel {
     }
   }
 
-  // only run on meilisearch for now
+  // Only Meilisearch
   async search(query: string) {
     try {
       await this.#meilisearchClient?.connect()
@@ -171,11 +159,10 @@ class OrderModel {
 
       allOrders.unshift(order)
 
-      await this.#redisClient.set(id, JSON.stringify(order))
-      await this.#redisClient.set(
-        this.#collectionName,
-        JSON.stringify(allOrders)
-      )
+      await Promise.all([
+        this.#redisClient.set(id, JSON.stringify(order)),
+        this.#redisClient.set(this.#collectionName, JSON.stringify(allOrders))
+      ])
     } catch (e) {
       console.error(e)
     }
@@ -189,11 +176,10 @@ class OrderModel {
         (collection: OrderSchema) => String(collection._id) !== id
       )
 
-      await this.#redisClient.del(id)
-      await this.#redisClient.set(
-        this.#collectionName,
-        JSON.stringify(newOrders)
-      )
+      await Promise.all([
+        this.#redisClient.del(id),
+        this.#redisClient.set(this.#collectionName, JSON.stringify(newOrders))
+      ])
     } catch (e) {
       console.error(e)
     }
