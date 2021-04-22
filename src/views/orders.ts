@@ -1,28 +1,23 @@
 import type { OrderSchema, Item } from "../types/order.ts"
+import { templateHead } from "../templates/head/orders.ts"
 
 export const orderViews = {
   landing: `"Dedicated to that one guy that really loves tacos"`,
+  orderCreate: () => {
+    return `
+      ${templateHead("Add Random Order")}
+      <h1>Random Taco Generator</h1>
+      <h2>Create a new randomly generated taco</h2>
+      <form method="post" action="/api/orders">
+        <input type="radio" id="random" name="random" value="true" checked>
+        <label for="random">Random</label><br>
+        <input type="submit" value="Submit">
+      </form>
+    `
+  },
   ordersList: (orders: OrderSchema[]) => {
     return `
-    <head>
-      <title>All Taco Orders</title>
-      <style>
-        body {
-          background: #333;
-          color: #fff;
-          padding: 12px;
-          font-family: system-ui;
-        }
-        ul {
-          list-style-type: none;
-          padding: 0;
-        }
-        li {
-          padding: 12px;
-          border: 1px solid #fff;
-        }
-      </style>
-    </head>
+    ${templateHead()}
     <h1>Orders List</h1>
     <h2>The latest orders posted below</h2>
     <p>${orders?.length} orders visible</p>

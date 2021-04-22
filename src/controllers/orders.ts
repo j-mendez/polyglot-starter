@@ -9,7 +9,6 @@ import { orderViews } from "../views/orders.ts"
 export default {
   createOrder: async (ctx: AppContext) => {
     const newOrder = ctx.request.body()
-
     try {
       ctx.response.body = {
         data: await Order.insert(
@@ -85,6 +84,10 @@ export default {
         return apiError(ctx)
       }
     }
+  },
+  renderOrdersCreatePage: async (ctx: AppContext) => {
+    ctx.response.type = "text/html"
+    ctx.response.body = orderViews.orderCreate()
   },
   renderOrdersListPage: async (ctx: AppContext) => {
     ctx.response.type = "text/html"
