@@ -85,6 +85,10 @@ export default {
       }
     }
   },
+  renderOrderFindPage: async (ctx: AppContext) => {
+    ctx.response.type = "text/html"
+    ctx.response.body = orderViews.orderFind()
+  },
   renderOrdersCreatePage: async (ctx: AppContext) => {
     ctx.response.type = "text/html"
     ctx.response.body = orderViews.orderCreate()

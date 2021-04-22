@@ -3,6 +3,27 @@ import { templateHead } from "../templates/head/orders.ts"
 
 export const orderViews = {
   landing: `"Dedicated to that one guy that really loves tacos"`,
+  orderFind: () => {
+    return `
+      ${templateHead("Find Order")}
+      <h1>Find your order</h1>
+      <h2>Get the taco by ID</h2>
+      <form method="get" action="/api/orders">
+        <label for="id">Order ID</label><br>
+        <input type="text" id="id" name="id" placeholder="ex: 60818f5397ba0eef59399c4c">
+        <input type="submit" value="Submit">
+      </form>
+
+      <h3>Search by name, ingredient, etc</h3>
+
+      <form method="get" action="/api/orders">
+        <label for="query">Query</label><br>
+        <input type="text" id="query" name="query" placeholder="ex: chicken">
+        <input type="submit" value="Submit">
+      </form>
+
+    `
+  },
   orderCreate: () => {
     return `
       ${templateHead("Add Random Order")}

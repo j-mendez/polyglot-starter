@@ -6,6 +6,7 @@ const router = new Router()
 router
   .get("/", controller.getLanding)
   .get("/pages/orders", controller.renderOrdersListPage)
+  .get("/pages/order", controller.renderOrderFindPage)
   .get("/pages/create", controller.renderOrdersCreatePage)
   .get("/api/orders", controller.getAllOrders)
   .get<{ id: string }>("/api/orders/:id", controller.getOrderById)

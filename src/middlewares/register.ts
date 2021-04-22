@@ -5,6 +5,7 @@ import { bodyParser } from "./body-parser.ts"
 import { notFound, errorHandler } from "./errors.ts"
 import { rateLimit } from "./rate-limiting.ts"
 import { validator } from "./validator.ts"
+import { redirect } from "./redirect.ts"
 
 const registerMiddlewares = (app: Application) =>
   [
@@ -12,6 +13,7 @@ const registerMiddlewares = (app: Application) =>
     bodyParser,
     errorHandler,
     validator,
+    redirect,
     SystemRoutes.routes(),
     SystemRoutes.allowedMethods(),
     OrdersRoutes.routes(),

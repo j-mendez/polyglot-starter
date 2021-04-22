@@ -3,7 +3,8 @@ export {
   Router,
   Context,
   Status,
-  isHttpError
+  isHttpError,
+  helpers
 } from "https://deno.land/x/oak/mod.ts"
 export {
   green,
