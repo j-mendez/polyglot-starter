@@ -12,6 +12,27 @@ Deno.test({
 })
 
 Deno.test({
+  name: "orders find view",
+  fn: () => {
+    const view = orderViews.orderFind()
+
+    assertEquals(typeof view, "string")
+    assertMatch(view, new RegExp("Search"))
+    assertMatch(view, new RegExp("Find"))
+  }
+})
+
+Deno.test({
+  name: "orders create view",
+  fn: () => {
+    const view = orderViews.orderCreate()
+
+    assertEquals(typeof view, "string")
+    assertMatch(view, new RegExp("random"))
+  }
+})
+
+Deno.test({
   name: "orders list page",
   fn: () => {
     const testFixture = JSON.parse(

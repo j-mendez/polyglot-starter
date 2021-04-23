@@ -22,11 +22,13 @@ Make sure to have deno installed. If your using mac you can use `brew install de
 
 ## Pages
 
-Pages are views that are server side rendered to html.
+Pages are views that are server side rendered.
 
-| url                  | dynamic   | models                                                                                 | description                                                                                                     |
+| url                  | params    | models                                                                                 | description                                                                                                     |
 | -------------------- | --------- | -------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
 | /pages/orders        | no        | Orders                                                                                 | Get a list of recent orders from redis                                                                          |
+| /pages/order         | no        | Orders                                                                                 | Find order from redis or meilisearch                                                                            |
+| /pages/create        | no        | Orders                                                                                 | Create a new random order                                                                                       |
 
 ## Validation
 
@@ -39,8 +41,9 @@ below are a list of custom middlewares in registration order.
 1. [rate-limiting](middlewares/rate-limiting.ts)
 2. [body-parser](middlewares/body-parser.ts)
 3. [errors](middlewares/errors.ts#L8)
-4. [validator](middlewares/validator.ts)
-4. [404](middlewares/errors.ts#L3)
+4. [redirect](middlewares/redirect.ts)
+5. [validator](middlewares/validator.ts)
+6. [404](middlewares/errors.ts#L3)
 
 ## Databases
 

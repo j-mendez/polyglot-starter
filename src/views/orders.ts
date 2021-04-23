@@ -1,5 +1,5 @@
 import type { OrderSchema, Item } from "../types/order.ts"
-import { templateHead } from "../templates/head/orders.ts"
+import { templateHead } from "./templates/head/orders.ts"
 
 export const orderViews = {
   landing: `"Dedicated to that one guy that really loves tacos"`,
@@ -21,7 +21,6 @@ export const orderViews = {
         <input type="text" id="query" name="query" placeholder="ex: chicken">
         <input type="submit" value="Submit">
       </form>
-
     `
   },
   orderCreate: () => {
