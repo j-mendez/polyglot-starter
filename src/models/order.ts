@@ -47,8 +47,8 @@ class OrderModel {
       )
 
       await Promise.all([
-        this.pipelineNewOrder(orderId + "", order),
-        this.#meilisearchClient?.set(this.#collectionName, [order])
+        await this.pipelineNewOrder(orderId + "", order),
+        await this.#meilisearchClient?.set(this.#collectionName, [order])
       ])
 
       return { id: orderId }
@@ -133,19 +133,15 @@ class OrderModel {
   }
 
   async clientsConnect() {
-    Promise.all([
-      await this.#mongodbClient?.connect(),
-      await this.#redisClient?.connect(),
-      await this.#meilisearchClient?.connect()
-    ])
+    await this.#mongodbClient?.connect()
+    await this.#redisClient?.connect()
+    await this.#meilisearchClient?.connect()
   }
 
   async clientsDisconnect() {
-    Promise.all([
-      await this.#mongodbClient?.close(),
-      await this.#redisClient?.close(),
-      await this.#meilisearchClient?.close()
-    ])
+    await this.#mongodbClient?.close()
+    await this.#redisClient?.close()
+    await this.#meilisearchClient?.close()
   }
 
   async pipelineNewOrder(id: string, order: OrderSchema) {

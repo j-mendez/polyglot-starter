@@ -4,7 +4,7 @@ import {
   prettyBenchmarkResult,
   prettyBenchmarkDown,
   prettyBenchmarkProgress
-} from "../test-deps.ts"
+} from "../src/test-deps.ts"
 import { toggleRateLimiting } from "../src/utils/toggle-rate-limiter.ts"
 
 const testFixture = JSON.parse(Deno.readTextFileSync("./fixtures/order.json"))
