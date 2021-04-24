@@ -59,11 +59,11 @@ The app is setup with assertion testing that handles redirection to valid respon
 
 To run unit test|e2e|intg run `deno test --allow-read`.
 
-For integration test run `./integration/orders.sh`. Make sure to have jq installed, you can install jq on mac by running `brew install jq`.
+For integration test run `./integrations/run.sh`.
 
 ### Benchmarks
 
-The benchmarks are located in the [benchmarks](/benchmarks) directory. On each suite the rate limiting middleware is disabled. Please do not run in production since this will adjust the runtime of your server. Read [benchmarks-docs](BENCHMARKS.md) for more information on the type of test, how to, average, and etc. 
+The benchmarks are located in the [benchmarks](/benchmarks) directory. On each suite the rate limiting middleware is disabled. Please do not run in production since this will adjust the runtime of your server. Read [benchmarks-docs](docs/BENCHMARKS.md) for more information on the type of test, how to, average, and etc. 
 
 ## Env
 
@@ -82,7 +82,7 @@ SYSTEM_ADMIN_PASSWORD=password
 
 ## Fixtures
 
-To get started with testing the api you can use the `fixtures` inside the project. For more information read [fixtures-doc](FIXTURES.md)
+To get started with testing the api you can use the `fixtures` inside the project. For more information read [fixtures-doc](docs/FIXTURES.md)
 
 ## Deploying
 

@@ -1,96 +1,39 @@
 import type { AppContext } from "../types/context.ts"
 import { OrderModel } from "../models/order.ts"
-import { notFound } from "../validators/rest/not-found.ts"
-import { apiError } from "../validators/rest/api-error.ts"
-import { randomize } from "../utils/randomize.ts"
-import { log } from "../utils/log.ts"
 import { orderViews } from "../views/orders.ts"
 
 export default {
   createOrder: async (ctx: AppContext) => {
-    const newOrder = ctx.request.body()
-    try {
-      ctx.response.body = {
-        data: await new OrderModel().insert(
-          newOrder.random ? randomize("order") : newOrder
-        )
-      }
-    } catch (e) {
-      log(e)
-    } finally {
-      if (!ctx.response.body) {
-        return apiError(ctx)
-      }
+    ctx.response.body = {
+      data: await new OrderModel().insert(ctx.request.body())
     }
   },
   getLanding: (ctx: AppContext) => {
     ctx.response.body = orderViews.landing
   },
   getAllOrders: async (ctx: AppContext) => {
-    try {
-      ctx.response.body = await new OrderModel().find()
-    } catch (e) {
-      log(e)
-    } finally {
-      if (!ctx.response.body) {
-        return apiError(ctx)
-      }
-    }
+    ctx.response.body = await new OrderModel().find()
   },
   getOrderById: async (ctx: AppContext) => {
-    try {
-      ctx.response.body = await new OrderModel().findById(ctx?.params?.id)
-    } catch (e) {
-      log(e)
-    } finally {
-      if (!ctx.response.body) {
-        return notFound(ctx)
-      }
-    }
+    ctx.response.body = await new OrderModel().findById(ctx?.params?.id)
   },
   updateOrderById: async (ctx: AppContext) => {
-    const updatedOrder = ctx.request.body()
-
-    try {
-      ctx.response.body = {
-        data: await new OrderModel().updateById(
-          String(ctx?.params?.id),
-          updatedOrder
-        )
-      }
-    } catch (e) {
-      log(e)
-    } finally {
-      if (!ctx.response.body) {
-        return notFound(ctx)
-      }
+    ctx.response.body = {
+      data: await new OrderModel().updateById(
+        String(ctx?.params?.id),
+        ctx.request.body()
+      )
     }
   },
   deleteOrderById: async (ctx: AppContext) => {
-    try {
-      ctx.response.body = await new OrderModel().deleteById(
-        String(ctx?.params?.id)
-      )
-    } catch (e) {
-      log(e)
-    } finally {
-      if (!ctx.response.body) {
-        return notFound(ctx)
-      }
-    }
+    ctx.response.body = await new OrderModel().deleteById(
+      String(ctx?.params?.id)
+    )
   },
   searchOrders: async (ctx: AppContext) => {
-    try {
-      ctx.response.body = await new OrderModel().search(
-        decodeURI(String(ctx?.params?.id))
-      )
-    } catch (e) {
-      log(e)
-    } finally {
-      if (!ctx.response.body) {
-        return apiError(ctx)
-      }
-    }
+    ctx.response.body = await new OrderModel().search(
+      decodeURI(String(ctx?.params?.id))
+    )
   },
   renderOrderFindPage: async (ctx: AppContext) => {
     ctx.response.type = "text/html"
@@ -102,11 +45,6 @@ export default {
   },
   renderOrdersListPage: async (ctx: AppContext) => {
     ctx.response.type = "text/html"
-    ctx.response.body = orderViews.ordersList(
-      await new OrderModel().find().catch(e => {
-        console.error(e)
-        return []
-      })
-    )
+    ctx.response.body = orderViews.ordersList(await new OrderModel().find())
   }
 }

@@ -42,8 +42,7 @@ jobs:
           name: Run integration tests
           command: |
             set -x
-            docker-compose exec --user=root --privileged core sh ./integrations/install-deps.sh
-            docker-compose exec core sh ./integrations/orders.sh
+            sh ./integrations/run.sh
 
       - run:
           name: Run benchmarks

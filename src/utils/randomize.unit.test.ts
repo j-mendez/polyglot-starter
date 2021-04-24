@@ -4,13 +4,9 @@ import { randomize } from "./randomize.ts"
 Deno.test({
   name: "randomize order",
   fn: () => {
-    const order = randomize("order")
+    const order = randomize()
 
     assertEquals(typeof order, "object")
     assertEquals(Array.isArray(order?.items), true)
-
-    const empty = randomize("")
-
-    assertEquals(empty, undefined)
   }
 })

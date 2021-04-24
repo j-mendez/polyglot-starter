@@ -7,14 +7,14 @@ const getIngredientOptions = (
 const randomNumberFrom = (max: number, min?: number) =>
   Math.floor(Math.random() * max) + (min || 0)
 
-export const randomize = (type: string) => {
-  if (type === "order") {
-    const toppingOptions = getIngredientOptions(Toppings)
-    const wrapOptions = getIngredientOptions(Wrap)
-    const proteinOptions = getIngredientOptions(Protein)
-    const cheeseOptions = getIngredientOptions(Cheese)
+export const randomize = () => {
+  const toppingOptions = getIngredientOptions(Toppings)
+  const wrapOptions = getIngredientOptions(Wrap)
+  const proteinOptions = getIngredientOptions(Protein)
+  const cheeseOptions = getIngredientOptions(Cheese)
 
-    const items = new Array(randomNumberFrom(5, 1)).fill(null).map(() => {
+  return {
+    items: new Array(randomNumberFrom(5, 1)).fill(null).map(() => {
       return {
         name: `random - ${randomNumberFrom(1000)}`,
         ingredients: {
@@ -28,9 +28,5 @@ export const randomize = (type: string) => {
         qty: randomNumberFrom(10)
       }
     })
-
-    return {
-      items
-    }
   }
 }

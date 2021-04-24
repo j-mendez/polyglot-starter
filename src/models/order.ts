@@ -1,8 +1,9 @@
+import type { OrderSchema } from "../types/order.ts"
 import { MongoDb } from "../databases/mongodb.ts"
 import { RedisDb } from "../databases/redis.ts"
 import { Meilisearch } from "../databases/meilisearch.ts"
+import { randomize } from "../utils/randomize.ts"
 import { MongoClient, Bson } from "../deps.ts"
-import type { OrderSchema } from "../types/order.ts"
 
 class OrderModel {
   #mongodbClient: MongoDb
@@ -35,6 +36,7 @@ class OrderModel {
   async insert(order: OrderSchema): Promise<{ id: Bson.ObjectId | string }> {
     try {
       await this.clientsConnect()
+      order = order.random ? randomize() : order
 
       const orderId = await this.#mongodbClient?.set(
         this.#collectionName,
@@ -53,7 +55,7 @@ class OrderModel {
 
   async find(): Promise<OrderSchema[]> {
     try {
-      return (await this.get()) as OrderSchema[]
+      return ((await this.get()) ?? []) as OrderSchema[]
     } catch (error) {
       throw error
     }
