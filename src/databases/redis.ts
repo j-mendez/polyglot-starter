@@ -49,6 +49,4 @@ class RedisDb extends Connector {
   }
 }
 
-const redis = new RedisDb()
-
-export { redis }
+export { RedisDb }

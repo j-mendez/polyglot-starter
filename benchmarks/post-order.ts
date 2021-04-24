@@ -24,24 +24,23 @@ const postOrder = async () => {
 }
 
 bench({
-  name: "runs10ForSimultaneousX10",
-  runs: 10,
+  name: "runs4ForSimultaneousX10",
+  runs: 4,
   async func(b): Promise<void> {
     b.start()
     for (let i = 0; i < 10; i++) {
       await postOrder()
-      console.log(i + 1)
     }
     b.stop()
   }
 })
 
 bench({
-  name: "runs5ForParallelX2",
-  runs: 5,
+  name: "runs4ForConcurrentX3",
+  runs: 4,
   async func(b): Promise<void> {
     b.start()
-    await Promise.all([postOrder(), postOrder()])
+    await Promise.all([postOrder(), postOrder(), postOrder()])
     b.stop()
   }
 })

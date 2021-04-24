@@ -1,5 +1,5 @@
 import type { AppContext } from "../types/context.ts"
-import { Order } from "../models/order.ts"
+import { OrderModel } from "../models/order.ts"
 import { notFound } from "../validators/rest/not-found.ts"
 import { apiError } from "../validators/rest/api-error.ts"
 import { randomize } from "../utils/randomize.ts"
@@ -11,7 +11,7 @@ export default {
     const newOrder = ctx.request.body()
     try {
       ctx.response.body = {
-        data: await Order.insert(
+        data: await new OrderModel().insert(
           newOrder.random ? randomize("order") : newOrder
         )
       }
@@ -28,7 +28,7 @@ export default {
   },
   getAllOrders: async (ctx: AppContext) => {
     try {
-      ctx.response.body = await Order.find()
+      ctx.response.body = await new OrderModel().find()
     } catch (e) {
       log(e)
     } finally {
@@ -39,7 +39,7 @@ export default {
   },
   getOrderById: async (ctx: AppContext) => {
     try {
-      ctx.response.body = await Order.findById(ctx?.params?.id)
+      ctx.response.body = await new OrderModel().findById(ctx?.params?.id)
     } catch (e) {
       log(e)
     } finally {
@@ -53,7 +53,10 @@ export default {
 
     try {
       ctx.response.body = {
-        data: await Order.updateById(String(ctx?.params?.id), updatedOrder)
+        data: await new OrderModel().updateById(
+          String(ctx?.params?.id),
+          updatedOrder
+        )
       }
     } catch (e) {
       log(e)
@@ -65,7 +68,9 @@ export default {
   },
   deleteOrderById: async (ctx: AppContext) => {
     try {
-      ctx.response.body = await Order.deleteById(String(ctx?.params?.id))
+      ctx.response.body = await new OrderModel().deleteById(
+        String(ctx?.params?.id)
+      )
     } catch (e) {
       log(e)
     } finally {
@@ -76,7 +81,7 @@ export default {
   },
   searchOrders: async (ctx: AppContext) => {
     try {
-      ctx.response.body = await Order.search(String(ctx?.params?.id))
+      ctx.response.body = await new OrderModel().search(String(ctx?.params?.id))
     } catch (e) {
       log(e)
     } finally {
@@ -96,7 +101,7 @@ export default {
   renderOrdersListPage: async (ctx: AppContext) => {
     ctx.response.type = "text/html"
     ctx.response.body = orderViews.ordersList(
-      await Order.find().catch(e => {
+      await new OrderModel().find().catch(e => {
         console.error(e)
         return []
       })

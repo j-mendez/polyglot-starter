@@ -71,6 +71,4 @@ class MongoDb extends Connector {
   }
 }
 
-const mongodb = new MongoDb()
-
-export { mongodb }
+export { MongoDb }

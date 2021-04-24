@@ -13,9 +13,7 @@ class Meilisearch extends Connector {
     return super.connect(false, {
       name: "Meilisearch",
       client: new MeiliSearchClient({
-        host: `http://${
-          Deno.env.get("MEILISEARCH_DB_URL") || "127.0.0.1"
-        }:7700`,
+        host: Deno.env.get("MEILISEARCH_DB_URL"),
         apiKey: Deno.env.get("MEILISEARCH_DB_API_KEY")
       }),
       setClient: true
@@ -51,6 +49,4 @@ class Meilisearch extends Connector {
   }
 }
 
-const meilisearch = new Meilisearch()
-
-export { meilisearch }
+export { Meilisearch }
