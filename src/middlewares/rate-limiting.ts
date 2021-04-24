@@ -2,8 +2,8 @@ import { Context, RateLimiterFlexible, Status } from "../deps.ts"
 import type { RateLimiter } from "../types/rate-limiting.ts"
 
 const rateLimiter = new (RateLimiterFlexible as RateLimiter).RateLimiterMemory({
-  points: 2,
-  duration: 3
+  points: 5,
+  duration: 1
 })
 
 const rateLimit = async (ctx: Context, next: () => Promise<void>) => {

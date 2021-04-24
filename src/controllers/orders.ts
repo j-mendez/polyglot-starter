@@ -81,7 +81,9 @@ export default {
   },
   searchOrders: async (ctx: AppContext) => {
     try {
-      ctx.response.body = await new OrderModel().search(String(ctx?.params?.id))
+      ctx.response.body = await new OrderModel().search(
+        decodeURI(String(ctx?.params?.id))
+      )
     } catch (e) {
       log(e)
     } finally {

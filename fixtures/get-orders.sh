@@ -1,4 +1,3 @@
 #!/bin/bash
 
-curl --location --request GET 'localhost:8000/api/orders' \
---header 'Content-Type: application/json'
+curl --location --request GET 'http://127.0.0.1:8000/api/orders'

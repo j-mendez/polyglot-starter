@@ -33,10 +33,17 @@ jobs:
             docker-compose --file ci.yml up -d
         
       - run:
-          name: Run tests
+          name: Run unit tests
           command: |
             set -x
             docker-compose exec core deno test --allow-read
+
+      - run:
+          name: Run integration tests
+          command: |
+            set -x
+            docker-compose exec --user=root --privileged core sh ./integrations/install-deps.sh
+            docker-compose exec core sh ./integrations/orders.sh
 
       - run:
           name: Run benchmarks

@@ -11,6 +11,7 @@ services:
       - ./src:/usr/src/app/src
       - ./fixtures:/usr/src/app/fixtures
       - ./benchmarks:/usr/src/app/benchmarks
+      - ./integrations:/usr/src/app/integrations
 
     ports:
       - '${PORT:-8000}:${PORT:-8000}'
