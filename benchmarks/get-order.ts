@@ -15,8 +15,7 @@ const getOrder = async (endpoint?: string) => {
     }
   })
 
-  const resBody = new Uint8Array(await res.arrayBuffer())
-  await Deno.stdout.write(resBody)
+  await res.arrayBuffer()
 }
 
 bench({
@@ -26,7 +25,6 @@ bench({
     b.start()
     for (let i = 0; i < 10; i++) {
       await getOrder()
-      console.log(i + 1)
     }
     b.stop()
   }

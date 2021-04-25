@@ -29,14 +29,15 @@ class RedisDb extends Connector {
     return await this.set(key, value)
   }
   get = async (key: string) => {
-    const result = await this.client?.get(key)
-    if (result) {
-      try {
+    let result
+    try {
+      result = await this.client?.get(key)
+      if (result) {
         return JSON.parse(result)
-      } catch (e) {
-        console.error(e)
-        return result
       }
+    } catch (e) {
+      console.error(e)
+      return result
     }
     return null
   }

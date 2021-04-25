@@ -4,7 +4,7 @@ services:
     container_name: core
     build:
       context: .
-      dockerfile: ./Dockerfile
+      dockerfile: Dockerfile
     networks:
       - backend
     volumes:
@@ -12,7 +12,6 @@ services:
       - ./fixtures:/usr/src/app/fixtures
       - ./benchmarks:/usr/src/app/benchmarks
       - ./integrations:/usr/src/app/integrations
-
     ports:
       - '${PORT:-8000}:${PORT:-8000}'
     environment:

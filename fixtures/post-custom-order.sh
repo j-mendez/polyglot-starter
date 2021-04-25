@@ -14,7 +14,8 @@ curl --location --request POST 'http://127.0.0.1:8000/api/orders' \
                 "cheese": "chedder"
             },
             "customIngredients": ["protein"],
-            "qty": 2
+            "qty": 2,
+            "name": "Custom"
         }
     ]
 }'

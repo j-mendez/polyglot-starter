@@ -20,7 +20,7 @@ const postOrder = async () => {
     }
   })
 
-  await Deno.stdout.write(new Uint8Array(await res.arrayBuffer()))
+  await res.arrayBuffer()
 }
 
 bench({

@@ -38,14 +38,13 @@ class OrderModel {
       await this.clientsConnect()
       order = order.random ? randomize() : order
 
-      const orderId = await this.#mongodbClient?.set(
-        this.#collectionName,
-        order
-      )
-      await this.pipelineNewOrder(orderId + "", order)
-      await this.#meilisearchClient?.set(this.#collectionName, [order])
+      await Promise.all([
+        await this.#mongodbClient?.set(this.#collectionName, order),
+        this.pipelineNewOrder(order),
+        this.#meilisearchClient?.set(this.#collectionName, [order])
+      ])
 
-      return { id: orderId }
+      return { id: order._id + "" }
     } catch (error) {
       throw error
     } finally {
@@ -82,8 +81,10 @@ class OrderModel {
         order
       )
 
-      await this.#redisClient.update(id, JSON.stringify(order))
-      await this.#meilisearchClient?.update(this.#collectionName, id)
+      await Promise.all([
+        this.#redisClient.update(id, JSON.stringify(order)),
+        this.#meilisearchClient?.update(this.#collectionName, id)
+      ])
 
       return { id: String(updatedOrder?.upsertedId) }
     } catch (error) {
@@ -99,8 +100,10 @@ class OrderModel {
 
       const result = await this.#mongodbClient?.del(this.#collectionName, id)
 
-      await this.pipelineDeleteOrder(id)
-      await this.#meilisearchClient?.del(this.#collectionName, id)
+      await Promise.all([
+        this.pipelineDeleteOrder(id),
+        this.#meilisearchClient?.del(this.#collectionName, id)
+      ])
 
       return result + ""
     } catch (error) {
@@ -122,7 +125,7 @@ class OrderModel {
     }
   }
 
-  async pipelineNewOrder(id: string, order: OrderSchema) {
+  async pipelineNewOrder(order: OrderSchema) {
     try {
       const allOrders =
         (await this.#redisClient.get(this.#collectionName)) || []
@@ -133,10 +136,13 @@ class OrderModel {
 
       allOrders.unshift(order)
 
-      await Promise.all([
-        this.#redisClient.set(id, JSON.stringify(order)),
-        this.#redisClient.set(this.#collectionName, JSON.stringify(allOrders))
-      ])
+      const pl = this.#redisClient?.client?.pipeline()
+
+      if (pl) {
+        pl.set(order._id + "", JSON.stringify(order))
+        pl.set(this.#collectionName, JSON.stringify(allOrders))
+        await pl.flush()
+      }
     } catch (e) {
       console.error(e)
     }
@@ -150,10 +156,13 @@ class OrderModel {
         (collection: OrderSchema) => String(collection._id) !== id
       )
 
-      await Promise.all([
-        this.#redisClient.del(id),
-        this.#redisClient.set(this.#collectionName, JSON.stringify(newOrders))
-      ])
+      const pl = this.#redisClient?.client?.pipeline()
+
+      if (pl) {
+        pl.del(id)
+        pl.set(this.#collectionName, JSON.stringify(newOrders))
+        await pl.flush()
+      }
     } catch (e) {
       console.error(e)
     }
