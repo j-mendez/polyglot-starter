@@ -4,7 +4,7 @@ import { orderViews } from "./orders.ts"
 Deno.test({
   name: "orders landing view",
   fn: () => {
-    const view = orderViews.landing
+    const view = orderViews.landing()
 
     assertEquals(typeof view, "string")
     assertMatch(view, new RegExp("tacos"))

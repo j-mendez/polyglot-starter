@@ -9,7 +9,8 @@ export default {
     }
   },
   getLanding: (ctx: AppContext) => {
-    ctx.response.body = orderViews.landing
+    ctx.response.type = "text/html"
+    ctx.response.body = orderViews.landing()
   },
   getAllOrders: async (ctx: AppContext) => {
     ctx.response.body = await new OrderModel().find()

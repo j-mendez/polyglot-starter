@@ -1,18 +1,24 @@
 export const templateHead = (title: string = "All Taco Orders") => {
   return `<head>
       <title>${title}</title>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mini.css/2.3.7/mini-dark.min.css">
       <style>
         body {
-          background: #333;
-          color: #fff;
-          padding: 12px;
+          padding: 0px;
+          margin: 0px;
           font-family: system-ui;
+        }
+        nav {
+          margin: 0px;
+        }
+        nav a {
+          display: inline;
+          margin-right: 4px;
         }
         ul {
           list-style-type: none;
           padding: 0;
         }
       </style>
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mini.css/2.3.7/mini-dark.min.css">
     </head>`
 }

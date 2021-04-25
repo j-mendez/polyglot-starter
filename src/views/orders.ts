@@ -1,12 +1,23 @@
 import type { OrderSchema, Item } from "../types/order.ts"
 import { templateHead } from "./templates/head/orders.ts"
+import { navbar } from "./templates/nav/navbar.ts"
 import { Toppings, Wrap, Protein, Cheese } from "../types/order.ts"
 
 export const orderViews = {
-  landing: `"Dedicated to that one guy that really loves tacos"`,
+  landing: () => {
+    return `
+      ${templateHead("Taco App")}
+      ${navbar("/")}
+      <main>
+      <h1>The Taco App</h1>
+      <h2>Dedicated to that one guy that really loves tacos</h2>
+      </main>
+    `
+  },
   orderFind: () => {
     return `
       ${templateHead("Find Order")}
+      ${navbar("pages/order")}
       <h1>Find your order</h1>
       <h2>Get the taco by ID</h2>
       <form method="get" action="/api/orders">
@@ -25,6 +36,7 @@ export const orderViews = {
   orderCreate: () => {
     return `
       ${templateHead("Add Taco")}
+      ${navbar("pages/create")}
       <h1>Taco Creator</h1>
       <h2>Create a new taco</h2>
       <p>Form WIP currently you can only add one taco</p>
@@ -60,6 +72,7 @@ export const orderViews = {
   orderCreateRandom: () => {
     return `
       ${templateHead("Add Random Order")}
+      ${navbar("pages/create-random")}
       <h1>Random Taco Generator</h1>
       <h2>Create a new randomly generated taco</h2>
       <form method="post" action="/api/orders">
@@ -72,6 +85,7 @@ export const orderViews = {
   ordersList: (orders: OrderSchema[]) => {
     return `
     ${templateHead()}
+    ${navbar("pages/orders")}
     <h1>Orders List</h1>
     <h2>The latest orders posted below</h2>
     <p>${orders?.length} orders visible</p>
