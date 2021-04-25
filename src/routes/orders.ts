@@ -8,6 +8,7 @@ router
   .get("/pages/orders", controller.renderOrdersListPage)
   .get("/pages/order", controller.renderOrderFindPage)
   .get("/pages/create", controller.renderOrdersCreatePage)
+  .get("/pages/create-random", controller.renderOrdersCreateRandomPage)
   .get("/api/orders", controller.getAllOrders)
   .get<{ id: string }>("/api/orders/:id", controller.getOrderById)
   .get<{ id: string }>("/api/orders/search/:id", controller.searchOrders)

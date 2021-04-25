@@ -4,6 +4,7 @@ import { router as SystemRoutes } from "../routes/system.ts"
 import { bodyParser } from "./body-parser.ts"
 import { notFound, errorHandler } from "./errors.ts"
 import { rateLimit } from "./rate-limiting.ts"
+import { formFormatter } from "./form-formatter.ts"
 import { validator } from "./validator.ts"
 import { redirect } from "./redirect.ts"
 
@@ -11,6 +12,7 @@ const registerMiddlewares = (app: Application) =>
   [
     rateLimit,
     bodyParser,
+    formFormatter,
     errorHandler,
     validator,
     redirect,

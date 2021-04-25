@@ -28,6 +28,16 @@ Deno.test({
     const view = orderViews.orderCreate()
 
     assertEquals(typeof view, "string")
+    assertMatch(view, new RegExp("taco"))
+  }
+})
+
+Deno.test({
+  name: "orders random create view",
+  fn: () => {
+    const view = orderViews.orderCreateRandom()
+
+    assertEquals(typeof view, "string")
     assertMatch(view, new RegExp("random"))
   }
 })

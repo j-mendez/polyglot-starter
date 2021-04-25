@@ -1,5 +1,6 @@
 import type { OrderSchema, Item } from "../types/order.ts"
 import { templateHead } from "./templates/head/orders.ts"
+import { Toppings, Wrap, Protein, Cheese } from "../types/order.ts"
 
 export const orderViews = {
   landing: `"Dedicated to that one guy that really loves tacos"`,
@@ -13,9 +14,7 @@ export const orderViews = {
         <input type="text" id="id" name="id" placeholder="ex: 60818f5397ba0eef59399c4c">
         <input type="submit" value="Submit">
       </form>
-
       <h3>Search by name, ingredient, etc</h3>
-
       <form method="get" action="/api/orders">
         <label for="query">Query</label><br>
         <input type="text" id="query" name="query" placeholder="ex: chicken">
@@ -24,6 +23,41 @@ export const orderViews = {
     `
   },
   orderCreate: () => {
+    return `
+      ${templateHead("Add Taco")}
+      <h1>Taco Creator</h1>
+      <h2>Create a new taco</h2>
+      <p>Form WIP currently you can only add one taco</p>
+      <form method="post" action="/api/orders">
+        <label for="items[0][name]">Name</label><br>
+        <input type="text" id="name" name="items[0][name]" placeholder="Name of taco lineup"><br>
+        <label for="items[0][qty]">QTY</label><br>
+        <input type="number" id="qty" name="items[0][qty]" placeholder="1-Infinity"><br>
+        <label for="items[0][ingredients][wrap]">Wrap</label><br>
+        <select name="items[0][ingredients][wrap]" id="wrap">
+          ${Object.values(Wrap)
+            .filter(item => typeof item !== "number")
+            .map(name => `<option value="${name}">${name}</option>`)}
+        </select><br>
+        <label for="items[0][ingredients][protein]">Protein</label><br>
+        <select name="items[0][ingredients][protein]" id="wrap">
+          ${Object.values(Protein)
+            .filter(item => typeof item !== "number")
+            .map(name => `<option value="${name}">${name}</option>`)}
+        </select><br>
+        <label for="items[0][ingredients][cheese]">Cheese</label><br>
+        <select name="items[0][ingredients][cheese]" id="wrap">
+          ${Object.values(Cheese)
+            .filter(item => typeof item !== "number")
+            .map(name => `<option value="${name}">${name}</option>`)}
+        </select><br>
+        <label for="items[0][ingredients][toppings][0]">Toppings</label><br>
+        <input type="text" id="toppings" name="items[0][ingredients][toppings][0]" placeholder="lettuce,onions"><br>
+        <input type="submit" value="Submit">
+      </form>
+    `
+  },
+  orderCreateRandom: () => {
     return `
       ${templateHead("Add Random Order")}
       <h1>Random Taco Generator</h1>

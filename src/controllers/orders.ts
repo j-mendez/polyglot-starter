@@ -43,6 +43,10 @@ export default {
     ctx.response.type = "text/html"
     ctx.response.body = orderViews.orderCreate()
   },
+  renderOrdersCreateRandomPage: async (ctx: AppContext) => {
+    ctx.response.type = "text/html"
+    ctx.response.body = orderViews.orderCreateRandom()
+  },
   renderOrdersListPage: async (ctx: AppContext) => {
     ctx.response.type = "text/html"
     ctx.response.body = orderViews.ordersList(await new OrderModel().find())

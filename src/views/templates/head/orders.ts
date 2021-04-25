@@ -12,10 +12,7 @@ export const templateHead = (title: string = "All Taco Orders") => {
           list-style-type: none;
           padding: 0;
         }
-        li {
-          padding: 12px;
-          border: 1px solid #fff;
-        }
       </style>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mini.css/2.3.7/mini-dark.min.css">
     </head>`
 }
