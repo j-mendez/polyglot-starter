@@ -84,6 +84,14 @@ SYSTEM_ADMIN_PASSWORD=password
 
 To get started with testing the api you can use the `fixtures` inside the project. For more information read [fixtures-doc](docs/FIXTURES.md)
 
+## Web Assembly
+
+Compiling the taco creator visual is done with web assembly. To build the binary run `./assembly/build.sh` which outputs the file into the `src/assets/static` folder. Make sure to have [AssembyScript](https://www.assemblyscript.org/) installed locally.
+
+```
+./assembly/build.sh
+```
+
 ## Deploying
 
 Deployment is done using [ECS](https://console.aws.amazon.com/ecs) for clustering, security groups, load balancing, logging, volumes, and elastic scaling. The docker image used for the api is at [image](https://hub.docker.com/r/jeffmendez19/taco-api)

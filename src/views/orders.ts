@@ -1,5 +1,6 @@
 import type { OrderSchema, Item } from "../types/order.ts"
 import { templateHead } from "./templates/head/orders.ts"
+import { canvasLoader } from "./templates/web-assembly/canvas.ts"
 import { navbar } from "./templates/nav/navbar.ts"
 import { Toppings, Wrap, Protein, Cheese } from "../types/order.ts"
 
@@ -17,20 +18,23 @@ export const orderViews = {
   orderFind: () => {
     return `
       ${templateHead("Find Order")}
-      ${navbar("pages/order")}
-      <h1>Find your order</h1>
-      <h2>Get the taco by ID</h2>
-      <form method="get" action="/api/orders">
-        <label for="id">Order ID</label><br>
-        <input type="text" id="id" name="id" placeholder="ex: 60818f5397ba0eef59399c4c">
-        <input type="submit" value="Submit">
-      </form>
-      <h3>Search by name, ingredient, etc</h3>
-      <form method="get" action="/api/orders">
-        <label for="query">Query</label><br>
-        <input type="text" id="query" name="query" placeholder="ex: chicken">
-        <input type="submit" value="Submit">
-      </form>
+      <main>
+        ${navbar("pages/order")}
+        <h1>Find your order</h1>
+        <h2>Get the taco by ID</h2>
+        <form method="get" action="/api/orders">
+          <label for="id">Order ID</label><br>
+          <input type="text" id="id" name="id" placeholder="ex: 60818f5397ba0eef59399c4c">
+          <input type="submit" value="Submit">
+        </form>
+        <h3>Search by name, ingredient, etc</h3>
+        <form method="get" action="/api/orders">
+          <label for="query">Query</label><br>
+          <input type="text" id="query" name="query" placeholder="ex: chicken">
+          <input type="submit" value="Submit">
+        </form>
+      </main>
+      ${canvasLoader()}
     `
   },
   orderCreate: () => {

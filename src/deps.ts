@@ -4,7 +4,8 @@ export {
   Context,
   Status,
   isHttpError,
-  helpers
+  helpers,
+  send
 } from "https://deno.land/x/oak/mod.ts"
 export {
   green,
