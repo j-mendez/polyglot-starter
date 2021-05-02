@@ -14,7 +14,7 @@ jobs:
           command: |
             set -x
             VER="17.03.0-ce"
-            apk update && apk add curl curl-dev bash
+            apk update && apk add curl curl-dev bash git
             curl -L -o /tmp/docker-$VER.tgz https://get.docker.com/builds/Linux/x86_64/docker-$VER.tgz
             tar -xz -C /tmp -f /tmp/docker-$VER.tgz
             mv /tmp/docker/* /usr/bin
@@ -28,15 +28,11 @@ jobs:
 
       - run:
           name: Start container and verify it's working
-          command: |
-            set -x
-            docker-compose --file ci.yml up -d
+          command: docker-compose --file ci.yml up -d
         
       - run:
           name: Run unit tests
-          command: |
-            set -x
-            docker-compose exec core deno test --allow-read
+          command: docker-compose exec core deno test --allow-read
 
       - run:
           name: Run integration tests
@@ -48,8 +44,20 @@ jobs:
           name: Run benchmarks
           command: |
             set -x
-            docker-compose exec core deno run --allow-run --allow-read  --allow-write --allow-net --allow-env --allow-hrtime ./benchmarks/post-order.ts
-            docker-compose exec core deno run --allow-run --allow-read  --allow-write --allow-net --allow-env --allow-hrtime ./benchmarks/get-order.ts
+            ls benchmarks -l
+            docker-compose exec core deno run --allow-run --allow-read --allow-write --allow-net --allow-env --allow-hrtime ./benchmarks/post-order.ts
+            docker-compose exec core deno run --allow-run --allow-read --allow-write --allow-net --allow-env --allow-hrtime ./benchmarks/get-order.ts
+
+      - run:
+          name: Commit benchmarks
+          command: |
+            set -x
+            git config credential.helper 'cache --timeout=120'
+            git config user.email "<email>"
+            git config user.name "Commit Bot"
+            git add -A
+            git diff-index --quiet HEAD || git commit -m "docs(benchmarks): update benchmarks [skip ci]"
+            git push -q https://${GITHUB_PERSONAL_TOKEN}@github.com/j-mendez/deno-rest-starter.git main
 
       - store_artifacts:
           path: /tmp/test-results

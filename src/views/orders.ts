@@ -23,9 +23,10 @@ export const orderViews = {
   orderFind: () => {
     return `
       ${templateHead("Find Order")}
+      ${navbar("pages/order")}
       <main>
-        ${navbar("pages/order")}
         <h1>Find your order</h1>
+        <p>Get your order placed easily below</p>
         <h2>Get order by ID</h2>
         <div class="small-box">
           <form method="get" action="/api/orders">
@@ -50,7 +51,7 @@ export const orderViews = {
       ${navbar("pages/create")}
       <h1>Taco Creator</h1>
       <h2>Create a new order</h2>
-      <p>Form WIP currently you can only add one order</p>
+      <p>Create your favorite taco</p>
       <form method="post" action="/api/orders">
         <label for="items[0][name]">Name</label><br>
         <input type="text" id="name" name="items[0][name]" placeholder="Name of taco lineup"><br>
