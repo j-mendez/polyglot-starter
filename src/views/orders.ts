@@ -10,9 +10,13 @@ export const orderViews = {
       ${templateHead("Taco App")}
       ${navbar("/")}
       <main>
-      <h1>The Taco App</h1>
-      <h2>Dedicated to that one guy that really loves tacos</h2>
+        <h1>The Taco App</h1>
+        <h2>Dedicated to that one guy that really loves tacos</h2>
+        <p>This app is a showcase of using DENO to create high performance applications.</p>
+        <h3>Deno REST Starter Application</h3>
+        <a href="https://github.com/j-mendez/deno-rest-starter">Github</a>
       </main>
+      ${canvasLoader()}
     `
   },
   orderFind: () => {
@@ -21,18 +25,20 @@ export const orderViews = {
       <main>
         ${navbar("pages/order")}
         <h1>Find your order</h1>
-        <h2>Get the taco by ID</h2>
-        <form method="get" action="/api/orders">
-          <label for="id">Order ID</label><br>
-          <input type="text" id="id" name="id" placeholder="ex: 60818f5397ba0eef59399c4c">
-          <input type="submit" value="Submit">
-        </form>
-        <h3>Search by name, ingredient, etc</h3>
-        <form method="get" action="/api/orders">
-          <label for="query">Query</label><br>
-          <input type="text" id="query" name="query" placeholder="ex: chicken">
-          <input type="submit" value="Submit">
-        </form>
+        <h2>Get order by ID</h2>
+        <div class="small-box">
+          <form method="get" action="/api/orders">
+            <label for="id">Order ID</label><br>
+            <input type="text" id="id" name="id" placeholder="ex: 60818f5397ba0eef59399c4c">
+            <input type="submit" value="Submit">
+          </form>
+          <h3>Search by name, ingredient, etc</h3>
+          <form method="get" action="/api/orders">
+            <label for="query">Query</label><br>
+            <input type="text" id="query" name="query" placeholder="ex: chicken">
+            <input type="submit" value="Submit">
+          </form>
+        </div>
       </main>
       ${canvasLoader()}
     `
@@ -42,8 +48,8 @@ export const orderViews = {
       ${templateHead("Add Taco")}
       ${navbar("pages/create")}
       <h1>Taco Creator</h1>
-      <h2>Create a new taco</h2>
-      <p>Form WIP currently you can only add one taco</p>
+      <h2>Create a new order</h2>
+      <p>Form WIP currently you can only add one order</p>
       <form method="post" action="/api/orders">
         <label for="items[0][name]">Name</label><br>
         <input type="text" id="name" name="items[0][name]" placeholder="Name of taco lineup"><br>

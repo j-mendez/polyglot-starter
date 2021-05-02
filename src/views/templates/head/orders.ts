@@ -23,6 +23,9 @@ export const templateHead = (title: string = "All Taco Orders") => {
           border: 1px solid #ccc;
           padding: 6px 10px;
         }
+        .small-box {
+          display: inline-block;
+        }
       </style>
     </head>`
 }

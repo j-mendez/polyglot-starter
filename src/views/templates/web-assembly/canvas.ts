@@ -1,7 +1,6 @@
 const canvasLoader = (): string => `
       <canvas id="canvas" style="width: 100%; height: 100%; position: absolute; top: 0; bottom: 0; left: 0; right: 0; opacity: 0.1; z-index: -1;"></canvas>
       <script>
-
         const canvas = document.getElementById("canvas");
         const boundingRect = canvas.getBoundingClientRect();
         const ctx = canvas.getContext("2d");
@@ -22,16 +21,15 @@ const canvasLoader = (): string => `
         const imageData = ctx.createImageData(width, height);
         const argb = new Uint32Array(imageData.data.buffer);
 
-        var importObject = {
+        const importObject = {
           env: {
             memory
           },
           Math,
         };
-
+        
         WebAssembly.instantiateStreaming(fetch('/assets/visualizer.wasm'), importObject).then((obj) => {
-          obj.instance.exports.update(width, height, 40);
-
+          obj.instance.exports.update(width, height, 7);
 
           for (let y = 0; y < height; ++y) {
             const yx = y * width;
@@ -43,11 +41,7 @@ const canvasLoader = (): string => `
           ctx.putImageData(imageData, 0, 0);
         });
 
-        function computeColors() {
-          const canvas = document.createElement("canvas");
-          canvas.width = 2048;
-          canvas.height = 1;
-          const ctx = canvas.getContext("2d");
+        function computeColors(position) {
           const grd = ctx.createLinearGradient(0, 0, 2048, 0);
           grd.addColorStop(0.00, "#000764");
           grd.addColorStop(0.16, "#2068CB");
@@ -60,6 +54,14 @@ const canvasLoader = (): string => `
         }
 
         const colors = computeColors();
+
+        const image = new Image(30, 34);
+        image.onload = drawImageActualSize;
+        image.src = '/assets/taco.png';
+
+        function drawImageActualSize() {
+          ctx.drawImage(this, 745, 300);
+        }
       </script>
 `
 
