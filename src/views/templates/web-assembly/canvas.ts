@@ -55,9 +55,9 @@ const canvasLoader = (): string => `
 
         const colors = computeColors();
 
-        const image = new Image(30, 34);
-        image.onload = drawImageActualSize;
-        image.src = '/assets/taco.png';
+        const tacoImage = new Image(30, 34);
+        tacoImage.onload = drawImageActualSize;
+        tacoImage.src = '/assets/taco.png';
 
         function drawImageActualSize() {
           ctx.drawImage(this, 745, 300);

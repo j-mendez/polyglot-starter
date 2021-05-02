@@ -11,8 +11,9 @@ export const orderViews = {
       ${navbar("/")}
       <main>
         <h1>The Taco App</h1>
+        <p>This app is focused on being the best starter app for DENO</p>
         <h2>Dedicated to that one guy that really loves tacos</h2>
-        <p>This app is a showcase of using DENO to create high performance applications.</p>
+        <p>We use DENO to create high performance applications.</p>
         <h3>Deno REST Starter Application</h3>
         <a href="https://github.com/j-mendez/deno-rest-starter">Github</a>
       </main>
