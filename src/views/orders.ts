@@ -95,7 +95,7 @@ export const orderViews = {
     <p>${orders?.length} orders visible</p>
     <ul>${orders
       .map((order: OrderSchema, index: number) => {
-        return `<li>${order.items
+        return `<li class="list-item">${order.items
           .map((item: Item) => {
             const { name, ingredients, qty } = item
             return `<details>

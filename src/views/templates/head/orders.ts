@@ -19,6 +19,10 @@ export const templateHead = (title: string = "All Taco Orders") => {
           list-style-type: none;
           padding: 0;
         }
+        .list-item {
+          border: 1px solid #ccc;
+          padding: 6px 10px;
+        }
       </style>
     </head>`
 }
