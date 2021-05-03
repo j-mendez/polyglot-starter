@@ -1,6 +1,7 @@
 # deno-rest-starter
 
 [![j-mendez](https://circleci.com/gh/j-mendez/deno-rest-starter.svg?style=svg)](https://circleci.com/gh/j-mendez/deno-rest-starter)
+[![Deploy to Amazon ECS](https://github.com/j-mendez/deno-rest-starter/actions/workflows/aws.yml/badge.svg)](https://github.com/j-mendez/deno-rest-starter/actions/workflows/aws.yml)
 
 a production ready deno starter focused on making tacos. Setup with redis, mongodb, and meilisearch model syncing.
 
