@@ -29,7 +29,7 @@ jobs:
       id: build-image
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: deno-starter-app
+        ECR_REPOSITORY: jeffmendez19/taco-api
         IMAGE_TAG: ${{ github.sha }}
 
       run: |
@@ -42,7 +42,7 @@ jobs:
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
         task-definition: task-def.json
-        container-name: core
+        container-name: taco-api
         image: ${{ steps.build-image.outputs.image }}
 
     - name: Deploy Amazon ECS task definition

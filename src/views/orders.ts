@@ -4,10 +4,12 @@ import { canvasLoader } from "./templates/web-assembly/canvas.ts"
 import { navbar } from "./templates/nav/navbar.ts"
 import { Toppings, Wrap, Protein, Cheese } from "../types/order.ts"
 
+const TITLE = "Deno Starter Application:"
+
 export const orderViews = {
   landing: () => {
     return `
-      ${templateHead("Taco App")}
+      ${templateHead(`${TITLE} Production ready set to scale!`)}
       ${navbar("/")}
       <main>
         <h1>The Taco App</h1>
@@ -22,7 +24,7 @@ export const orderViews = {
   },
   orderFind: () => {
     return `
-      ${templateHead("Find Order")}
+      ${templateHead(`${TITLE} Find Order`)}
       ${navbar("pages/order")}
       <main>
         <h1>Find your order</h1>
@@ -47,7 +49,7 @@ export const orderViews = {
   },
   orderCreate: () => {
     return `
-      ${templateHead("Add Taco")}
+      ${templateHead(`${TITLE} Create Order`)}
       ${navbar("pages/create")}
       <h1>Taco Creator</h1>
       <h2>Create a new order</h2>
@@ -83,7 +85,7 @@ export const orderViews = {
   },
   orderCreateRandom: () => {
     return `
-      ${templateHead("Add Random Order")}
+      ${templateHead(`${TITLE} Create Random Order`)}
       ${navbar("pages/create-random")}
       <h1>Random Taco Generator</h1>
       <h2>Create a new randomly generated taco</h2>
@@ -96,7 +98,7 @@ export const orderViews = {
   },
   ordersList: (orders: OrderSchema[]) => {
     return `
-    ${templateHead()}
+    ${templateHead(`${TITLE} All Orders`)}
     ${navbar("pages/orders")}
     <h1>Orders List</h1>
     <h2>The latest orders posted below</h2>
