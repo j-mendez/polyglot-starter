@@ -22,6 +22,8 @@ services:
     image: redis:alpine
     networks:
       - backend
+    volumes:
+      - redis-data:/data
 
   meilisearch:
     container_name: meilisearch
@@ -29,7 +31,9 @@ services:
     command: ./meilisearch --master-key=${MEILISEARCH_DB_API_KEY:-masterKey} --no-analytics=true
     networks:
       - backend
-         
+    volumes:
+      - meilisearch-data:/data
+
   mongo:
     container_name: mongo
     networks:
@@ -63,5 +67,6 @@ networks:
   backend:
 
 volumes:
-  core:
   mongodb:
+  redis-data:
+  meilisearch-data:
