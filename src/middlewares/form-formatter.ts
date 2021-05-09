@@ -7,7 +7,7 @@ const defaultItems = {
   qty: 0
 }
 
-const formFormatter = async (ctx: Context, next: () => Promise<void>) => {
+const formFormatter = async (ctx: Context, next: () => Promise<unknown>) => {
   if (ctx.request.hasBody) {
     let body: any = {}
 

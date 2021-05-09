@@ -1,6 +1,7 @@
 FROM hayd/alpine-deno:1.9.0
 
 ENV PORT=8000
+ENV DEV=false
 
 EXPOSE $PORT
 
@@ -18,4 +19,4 @@ RUN deno cache ./src/main.ts
 
 USER root
 
-CMD ["run", "--allow-read", "--allow-env", "--allow-net", "./src/main.ts"]
+CMD sh start.sh ${DEV:-false}

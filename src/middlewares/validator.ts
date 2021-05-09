@@ -2,7 +2,7 @@ import { Context } from "../deps.ts"
 import { validateOrderItems } from "../validators/rest/order.ts"
 import { validateBody } from "../validators/rest/body.ts"
 
-const validator = async (ctx: Context, next: () => Promise<void>) => {
+const validator = async (ctx: Context, next: () => Promise<unknown>) => {
   const pathname = ctx.request.url.pathname
   const method = ctx.request.method
   switch (pathname) {

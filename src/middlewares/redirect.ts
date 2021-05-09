@@ -1,6 +1,6 @@
 import { Context, helpers } from "../deps.ts"
 
-const redirect = async (ctx: Context, next: () => Promise<void>) => {
+const redirect = async (ctx: Context, next: () => Promise<unknown>) => {
   const pathname = ctx.request.url.pathname
   const method = ctx.request.method
   switch (pathname) {

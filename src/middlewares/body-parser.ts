@@ -1,6 +1,6 @@
 import { Context } from "../deps.ts"
 
-const bodyParser = async (ctx: Context, next: () => Promise<void>) => {
+const bodyParser = async (ctx: Context, next: () => Promise<unknown>) => {
   if (ctx.request.hasBody) {
     const result = ctx.request.body()
     let body: any = {}

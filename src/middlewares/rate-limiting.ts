@@ -6,7 +6,7 @@ const rateLimiter = new (RateLimiterFlexible as RateLimiter).RateLimiterMemory({
   duration: 1
 })
 
-const rateLimit = async (ctx: Context, next: () => Promise<void>) => {
+const rateLimit = async (ctx: Context, next: () => Promise<unknown>) => {
   try {
     if (!Deno.env.get("RATE_LIMITING_DISABLED")) {
       await rateLimiter.consume(ctx.request.ip, 1)

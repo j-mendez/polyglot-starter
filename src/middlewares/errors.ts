@@ -5,7 +5,10 @@ export function notFound(ctx: Context) {
   ctx.response.body = `<html><body><h1>404 - Not Found</h1><p>${ctx.request.url} could not be found.</p></body></html>`
 }
 
-export const errorHandler = async (ctx: Context, next: () => Promise<void>) => {
+export const errorHandler = async (
+  ctx: Context,
+  next: () => Promise<unknown>
+) => {
   try {
     await next()
   } catch (err) {
