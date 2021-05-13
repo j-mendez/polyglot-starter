@@ -36,15 +36,15 @@ export default {
       decodeURI(String(ctx?.params?.id))
     )
   },
-  renderOrderFindPage: async (ctx: AppContext) => {
+  renderOrderFindPage: (ctx: AppContext) => {
     ctx.response.type = "text/html"
     ctx.response.body = orderViews.orderFind()
   },
-  renderOrdersCreatePage: async (ctx: AppContext) => {
+  renderOrdersCreatePage: (ctx: AppContext) => {
     ctx.response.type = "text/html"
     ctx.response.body = orderViews.orderCreate()
   },
-  renderOrdersCreateRandomPage: async (ctx: AppContext) => {
+  renderOrdersCreateRandomPage: (ctx: AppContext) => {
     ctx.response.type = "text/html"
     ctx.response.body = orderViews.orderCreateRandom()
   },

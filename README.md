@@ -81,6 +81,10 @@ REDIS_DB_URL=redis
 SYSTEM_ADMIN_PASSWORD=password
 ```
 
+## Auto-Loader
+
+All routers in the `routes` folder are autoloaded into the application. Simply export as a named export called `router`.
+
 ## Fixtures
 
 To get started with testing the api you can use the `fixtures` inside the project. For more information read [fixtures-doc](docs/FIXTURES.md)

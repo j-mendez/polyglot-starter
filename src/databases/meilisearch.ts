@@ -4,7 +4,7 @@ import { Connector } from "./connector.ts"
 
 class Meilisearch extends Connector {
   client: Search | null
-  connectTimeout: number = Number(Deno.env.get("MEILISEARCH_DB_RETRY_TIMOUT"))
+  connectTimeout = Number(Deno.env.get("MEILISEARCH_DB_RETRY_TIMOUT"))
   constructor() {
     super()
     this.client = null

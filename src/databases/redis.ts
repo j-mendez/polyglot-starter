@@ -3,7 +3,7 @@ import { Connector } from "./connector.ts"
 
 class RedisDb extends Connector {
   client: Redis | null
-  connectTimeout: number = Number(Deno.env.get("REDIS_DB_RETRY_TIMOUT"))
+  connectTimeout = Number(Deno.env.get("REDIS_DB_RETRY_TIMOUT"))
   constructor() {
     super()
     this.client = null

@@ -1,4 +1,4 @@
-import { assertEquals, assertMatch } from "../test-deps.ts"
+import { assertEquals, assertMatch } from "../deps-testing.ts"
 import { orderViews } from "./orders.ts"
 
 Deno.test({

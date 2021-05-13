@@ -1,10 +1,12 @@
 import { green, bold, yellow, Redis, MongoClient } from "../deps.ts"
 import type { Search } from "../types/search.ts"
 
+type Client = Redis | MongoClient | Search | null
+
 class Connector {
   #connected?: boolean = false
   #connectionName: string = ""
-  client?: Redis | MongoClient | Search | null
+  client?: Client
   connectTimeout: number = 15000
   async connect(
     retry: boolean = false,

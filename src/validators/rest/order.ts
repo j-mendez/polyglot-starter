@@ -29,11 +29,7 @@ const validateIngredients = (
   { key, value, validator }: IngredientsOptions,
   customIngredients?: unknown
 ) => {
-  if (
-    typeof customIngredients !== "undefined" &&
-    Array.isArray(customIngredients) &&
-    !customIngredients?.includes(key)
-  ) {
+  if (Array.isArray(customIngredients) && !customIngredients?.includes(key)) {
     const validators = Object.values(validator).filter(
       item => typeof item !== "number"
     )

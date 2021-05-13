@@ -1,7 +1,7 @@
 import { MeiliSearchClient } from "../deps.ts"
 
 class Search extends MeiliSearchClient {
-  close: any
+  close?: () => void
 }
 
 export type { Search }

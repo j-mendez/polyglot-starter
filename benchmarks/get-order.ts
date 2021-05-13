@@ -4,7 +4,7 @@ import {
   prettyBenchmarkResult,
   prettyBenchmarkDown,
   prettyBenchmarkProgress
-} from "../src/test-deps.ts"
+} from "../src/deps-testing.ts"
 import { toggleRateLimiting } from "../src/utils/toggle-rate-limiter.ts"
 
 const getOrder = async (endpoint?: string) => {
