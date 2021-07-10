@@ -1,12 +1,12 @@
-import { assertEquals, assertMatch } from "../deps-testing.ts"
-import { randomize } from "./randomize.ts"
+import { assertEquals } from "../deps-testing.ts";
+import { randomize } from "./randomize.ts";
 
 Deno.test({
   name: "randomize order",
   fn: () => {
-    const order = randomize()
+    const order = randomize();
 
-    assertEquals(typeof order, "object")
-    assertEquals(Array.isArray(order?.items), true)
-  }
-})
+    assertEquals(typeof order, "object");
+    assertEquals(Array.isArray(order?.items), true);
+  },
+});

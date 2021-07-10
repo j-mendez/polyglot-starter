@@ -1,10 +1,10 @@
-import type { OrderSchema, Item } from "../types/order.ts"
-import { templateHead } from "./templates/head/orders.ts"
-import { canvasLoader } from "./templates/web-assembly/canvas.ts"
-import { navbar } from "./templates/nav/navbar.ts"
-import { Toppings, Wrap, Protein, Cheese } from "../types/order.ts"
+import type { OrderSchema, Item } from "../types/order.ts";
+import { templateHead } from "./templates/head/orders.ts";
+import { canvasLoader } from "./templates/web-assembly/canvas.ts";
+import { navbar } from "./templates/nav/navbar.ts";
+import { Wrap, Protein, Cheese } from "../types/order.ts";
 
-const TITLE = "Deno Starter Application:"
+const TITLE = "Deno Starter Application:";
 
 export const orderViews = {
   landing: () => {
@@ -20,7 +20,7 @@ export const orderViews = {
         <a href="https://github.com/j-mendez/deno-rest-starter">Github</a>
       </main>
       ${canvasLoader()}
-    `
+    `;
   },
   orderFind: () => {
     return `
@@ -45,7 +45,7 @@ export const orderViews = {
         </div>
       </main>
       ${canvasLoader()}
-    `
+    `;
   },
   orderCreate: () => {
     return `
@@ -62,26 +62,26 @@ export const orderViews = {
         <label for="items[0][ingredients][wrap]">Wrap</label><br>
         <select name="items[0][ingredients][wrap]" id="wrap">
           ${Object.values(Wrap)
-            .filter(item => typeof item !== "number")
-            .map(name => `<option value="${name}">${name}</option>`)}
+            .filter((item) => typeof item !== "number")
+            .map((name) => `<option value="${name}">${name}</option>`)}
         </select><br>
         <label for="items[0][ingredients][protein]">Protein</label><br>
         <select name="items[0][ingredients][protein]" id="wrap">
           ${Object.values(Protein)
-            .filter(item => typeof item !== "number")
-            .map(name => `<option value="${name}">${name}</option>`)}
+            .filter((item) => typeof item !== "number")
+            .map((name) => `<option value="${name}">${name}</option>`)}
         </select><br>
         <label for="items[0][ingredients][cheese]">Cheese</label><br>
         <select name="items[0][ingredients][cheese]" id="wrap">
           ${Object.values(Cheese)
-            .filter(item => typeof item !== "number")
-            .map(name => `<option value="${name}">${name}</option>`)}
+            .filter((item) => typeof item !== "number")
+            .map((name) => `<option value="${name}">${name}</option>`)}
         </select><br>
         <label for="items[0][ingredients][toppings][0]">Toppings</label><br>
         <input type="text" id="toppings" name="items[0][ingredients][toppings][0]" placeholder="lettuce,onions"><br>
         <input type="submit" value="Submit">
       </form>
-    `
+    `;
   },
   orderCreateRandom: () => {
     return `
@@ -94,7 +94,7 @@ export const orderViews = {
         <label for="random">Random</label><br>
         <input type="submit" value="Submit">
       </form>
-    `
+    `;
   },
   ordersList: (orders: OrderSchema[]) => {
     return `
@@ -107,21 +107,21 @@ export const orderViews = {
       .map((order: OrderSchema, index: number) => {
         return `<li class="list-item">${order.items
           .map((item: Item) => {
-            const { name, ingredients, qty } = item
+            const { name, ingredients, qty } = item;
             return `<details>
                       <summary><b>${name}</b> - ${order._id}</summary>
                       <p>Qty: ${qty}</p>
                       <u>Ingredients</u>
                       ${Object.entries(ingredients)
                         .map(([key, value]) => {
-                          return `<p>${key}: ${value}</p>`
+                          return `<p>${key}: ${value}</p>`;
                         })
                         .join("")}
-                </details>`
+                </details>`;
           })
-          .join("")}</li>`
+          .join("")}</li>`;
       })
       .join("")}
-    </ul>`
-  }
-}
+    </ul>`;
+  },
+};

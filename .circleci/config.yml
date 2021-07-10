@@ -29,22 +29,18 @@ jobs:
       - run:
           name: Start container and verify it's working
           command: docker-compose --file ci.yml up -d
-        
-      - run:
-          name: Run unit tests
-          command: docker-compose exec core deno test --allow-read
 
       - run:
           name: Run integration tests
           command: |
             set -x
-            sh ./integrations/run.sh
+            ./integrations/run.sh
 
       - run:
           name: Run benchmarks
           command: |
             set -x
-            ls benchmarks -l
+            docker-compose --file ci.yml up -d
             docker-compose exec core deno run --allow-run --allow-read --allow-write --allow-net --allow-env --allow-hrtime ./benchmarks/post-order.ts
             docker-compose exec core deno run --allow-run --allow-read --allow-write --allow-net --allow-env --allow-hrtime ./benchmarks/get-order.ts
 
@@ -58,6 +54,10 @@ jobs:
             git add -A
             git diff-index --quiet HEAD || git commit -m "docs(benchmarks): update benchmarks [skip ci]"
             git push -q https://${GITHUB_PERSONAL_TOKEN}@github.com/j-mendez/deno-rest-starter.git main
+
+      - run:
+          name: Run unit tests
+          command: docker-compose exec core deno test --allow-read
 
       - store_artifacts:
           path: /tmp/test-results

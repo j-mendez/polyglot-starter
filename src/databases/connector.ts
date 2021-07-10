@@ -1,36 +1,36 @@
-import { green, bold, yellow, Redis, MongoClient } from "../deps.ts"
-import type { Search } from "../types/search.ts"
+import { green, bold, yellow, Redis, MongoClient } from "../deps.ts";
+import type { Search } from "../types/search.ts";
 
-type Client = Redis | MongoClient | Search | null
+type Client = Redis | MongoClient | Search | null;
 
 class Connector {
-  #connected?: boolean = false
-  #connectionName: string = ""
-  client?: Client
-  connectTimeout: number = 15000
+  #connected?: boolean = false;
+  #connectionName: string = "";
+  client?: Client;
+  connectTimeout: number = 15000;
   async connect(
     retry: boolean = false,
     connection: {
-      name: string
-      client: typeof Client
-      setClient: boolean
+      name: string;
+      client: typeof Client;
+      setClient: boolean;
     }
   ): Promise<void> {
     try {
-      this.#connected = true
-      this.#connectionName = connection.name
-      const client = await connection.client
+      this.#connected = true;
+      this.#connectionName = connection.name;
+      const client = await connection.client;
       if (connection.setClient) {
-        this.client = client
+        this.client = client;
       }
-      console.log(green(`${this.#connectionName} connection opened`))
+      console.log(green(`${this.#connectionName} connection opened`));
     } catch (e) {
-      console.log(yellow(`${this.#connectionName} connection error: ${e}`))
+      console.log(yellow(`${this.#connectionName} connection error: ${e}`));
       if (retry) {
         setTimeout(
           () => this.connect(retry, connection),
           Number(this.connectTimeout)
-        )
+        );
       }
     }
   }
@@ -38,17 +38,17 @@ class Connector {
     if (this.#connected) {
       try {
         if (typeof this.client?.close === "function") {
-          await this.client.close()
+          await this.client.close();
         } else {
-          this.client = undefined
+          this.client = undefined;
         }
-        console.log(bold(`${this.#connectionName} connection closed`))
-        this.#connected = false
+        console.log(bold(`${this.#connectionName} connection closed`));
+        this.#connected = false;
       } catch (e) {
-        console.error(e)
+        console.error(e);
       }
     }
-  }
+  };
 }
 
-export { Connector }
+export { Connector };
