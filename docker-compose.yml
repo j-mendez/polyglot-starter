@@ -1,4 +1,4 @@
-version: '3.0'
+version: "3.0"
 services:
   core:
     container_name: core
@@ -13,7 +13,7 @@ services:
       - ./benchmarks:/usr/src/app/benchmarks
       - ./integrations:/usr/src/app/integrations
     ports:
-      - '${PORT:-8000}:${PORT:-8000}'
+      - "${PORT:-8000}:${PORT:-8000}"
     environment:
       - MONGO_DB_URL=${MONGO_DB_URL:-mongodb://mongo:27017/?compressors=zlib&gssapiServiceName=mongodb}
       - DEV=true
@@ -36,12 +36,12 @@ services:
 
   mongo:
     container_name: mongo
+    image: mongo
     networks:
       - backend
-    image: mongo
     restart: always
     ports:
-      - '${MONGO_DB_PORT:-27017}:${MONGO_DB_PORT:-27017}'
+      - "${MONGO_DB_PORT:-27017}:${MONGO_DB_PORT:-27017}"
     volumes:
       - mongodb:/data/db
     environment:

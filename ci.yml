@@ -1,4 +1,4 @@
-version: '3.0'
+version: "3.0"
 services:
   core:
     container_name: core
@@ -8,9 +8,9 @@ services:
     networks:
       - backend
     ports:
-      - '${PORT:-8000}:${PORT:-8000}'
+      - "${PORT:-8000}:${PORT:-8000}"
     environment:
-      - MONGO_DB_URL=${MONGO_DB_URL:-mongodb://mongo:27017/?compressors=zlib&gssapiServiceName=mongodb}
+      - MONGO_DB_URL=${MONGO_DB_URL:-mongodb://mongo:27017}
 
   redis:
     container_name: redis
@@ -24,22 +24,16 @@ services:
     command: ./meilisearch --master-key=${MEILISEARCH_DB_API_KEY:-masterKey} --no-analytics=true
     networks:
       - backend
-         
+
   mongo:
     container_name: mongo
+    image: mvertes/alpine-mongo
     networks:
       - backend
-    image: mongo
-    restart: always
     ports:
-      - '${MONGO_DB_PORT:-27017}:${MONGO_DB_PORT:-27017}'
-    volumes:
-      - mongodb:/data/db
+      - "${MONGO_DB_PORT:-27017}:${MONGO_DB_PORT:-27017}"
     environment:
       - MONGO_INITDB_DATABASE=${MONGO_DB_NAME:-taco-rocket}
 
 networks:
   backend:
-
-volumes:
-  mongodb:
