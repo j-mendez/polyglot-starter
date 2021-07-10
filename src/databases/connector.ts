@@ -12,7 +12,7 @@ class Connector {
     retry: boolean = false,
     connection: {
       name: string
-      client: any
+      client: typeof Client
       setClient: boolean
     }
   ): Promise<void> {

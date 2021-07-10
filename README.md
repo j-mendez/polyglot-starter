@@ -2,6 +2,7 @@
 
 [![j-mendez](https://circleci.com/gh/j-mendez/deno-rest-starter.svg?style=svg)](https://circleci.com/gh/j-mendez/deno-rest-starter)
 [![Deploy to Amazon ECS](https://github.com/j-mendez/deno-rest-starter/actions/workflows/aws.yml/badge.svg)](https://github.com/j-mendez/deno-rest-starter/actions/workflows/aws.yml)
+[![Maintainability](https://api.codeclimate.com/v1/badges/eab3ba37ee4e35f3e6e6/maintainability)](https://codeclimate.com/github/j-mendez/deno-rest-starter/maintainability)
 
 a production ready deno starter focused on making tacos. Setup with redis, mongodb, and meilisearch model syncing.
 
@@ -25,15 +26,15 @@ Make sure to have deno installed. If your using mac you can use `brew install de
 
 Pages are views that are server side rendered.
 
-| url                  | params    | models                                                                                 | description                                                                                                     |
-| -------------------- | --------- | -------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| /pages/orders        | no        | Orders                                                                                 | Get a list of recent orders from redis                                                                          |
-| /pages/order         | no        | Orders                                                                                 | Find order from redis or meilisearch                                                                            |
-| /pages/create        | no        | Orders                                                                                 | Create a new random order                                                                                       |
+| url           | params | models | description                            |
+| ------------- | ------ | ------ | -------------------------------------- |
+| /pages/orders | no     | Orders | Get a list of recent orders from redis |
+| /pages/order  | no     | Orders | Find order from redis or meilisearch   |
+| /pages/create | no     | Orders | Create a new random order              |
 
 ## Validation
 
-REST validation is done through [validator-middleware](middlewares/validator.ts). 
+REST validation is done through [validator-middleware](middlewares/validator.ts).
 
 ## Middlewares
 
@@ -64,7 +65,7 @@ For integration test run `./integrations/run.sh`.
 
 ### Benchmarks
 
-The benchmarks are located in the [benchmarks](/benchmarks) directory. On each suite the rate limiting middleware is disabled. Please do not run in production since this will adjust the runtime of your server. Read [benchmarks-docs](docs/BENCHMARKS.md) for more information on the type of test, how to, average, and etc. 
+The benchmarks are located in the [benchmarks](/benchmarks) directory. On each suite the rate limiting middleware is disabled. Please do not run in production since this will adjust the runtime of your server. Read [benchmarks-docs](docs/BENCHMARKS.md) for more information on the type of test, how to, average, and etc.
 
 ## Env
 
