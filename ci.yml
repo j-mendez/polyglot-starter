@@ -10,7 +10,7 @@ services:
     ports:
       - "${PORT:-8000}:${PORT:-8000}"
     environment:
-      - MONGO_DB_URL=${MONGO_DB_URL:-mongodb://mongo:27017}
+      - MONGO_DB_URL=${MONGO_DB_URL:-mongodb://mongo:27017/?compressors=zlib&gssapiServiceName=mongodb}
 
   redis:
     container_name: redis

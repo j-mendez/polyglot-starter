@@ -34,30 +34,30 @@ jobs:
           name: Run unit tests
           command: docker-compose exec core deno test --allow-read
 
-      - run:
-          name: Run integration tests
-          command: |
-            set -x
-            sh ./integrations/run.sh
+      # - run:
+      #     name: Run integration tests
+      #     command: |
+      #       set -x
+      #       sh ./integrations/run.sh
 
-      - run:
-          name: Run benchmarks
-          command: |
-            set -x
-            ls benchmarks -l
-            docker-compose exec core deno run --allow-run --allow-read --allow-write --allow-net --allow-env --allow-hrtime ./benchmarks/post-order.ts
-            docker-compose exec core deno run --allow-run --allow-read --allow-write --allow-net --allow-env --allow-hrtime ./benchmarks/get-order.ts
+      # - run:
+      #     name: Run benchmarks
+      #     command: |
+      #       set -x
+      #       ls benchmarks -l
+      #       docker-compose exec core deno run --allow-run --allow-read --allow-write --allow-net --allow-env --allow-hrtime ./benchmarks/post-order.ts
+      #       docker-compose exec core deno run --allow-run --allow-read --allow-write --allow-net --allow-env --allow-hrtime ./benchmarks/get-order.ts
 
-      - run:
-          name: Commit benchmarks
-          command: |
-            set -x
-            git config credential.helper 'cache --timeout=120'
-            git config user.email "<email>"
-            git config user.name "Commit Bot"
-            git add -A
-            git diff-index --quiet HEAD || git commit -m "docs(benchmarks): update benchmarks [skip ci]"
-            git push -q https://${GITHUB_PERSONAL_TOKEN}@github.com/j-mendez/deno-rest-starter.git main
+      # - run:
+      #     name: Commit benchmarks
+      #     command: |
+      #       set -x
+      #       git config credential.helper 'cache --timeout=120'
+      #       git config user.email "<email>"
+      #       git config user.name "Commit Bot"
+      #       git add -A
+      #       git diff-index --quiet HEAD || git commit -m "docs(benchmarks): update benchmarks [skip ci]"
+      #       git push -q https://${GITHUB_PERSONAL_TOKEN}@github.com/j-mendez/deno-rest-starter.git main
 
       - store_artifacts:
           path: /tmp/test-results
