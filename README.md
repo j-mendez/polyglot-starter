@@ -1,6 +1,6 @@
 # deno-rest-starter
 
-[![j-mendez](https://circleci.com/gh/j-mendez/deno-rest-starter.svg?style=svg)](https://circleci.com/gh/j-mendez/deno-rest-starter)
+[![j-mendez](https://circleci.com/gh/j-mendez/polyglot-starter.svg?style=svg)](https://circleci.com/gh/j-mendez/polyglot-starter)
 [![Deploy to Amazon ECS](https://github.com/j-mendez/deno-rest-starter/actions/workflows/aws.yml/badge.svg)](https://github.com/j-mendez/deno-rest-starter/actions/workflows/aws.yml)
 [![Maintainability](https://api.codeclimate.com/v1/badges/eab3ba37ee4e35f3e6e6/maintainability)](https://codeclimate.com/github/j-mendez/deno-rest-starter/maintainability)
 
